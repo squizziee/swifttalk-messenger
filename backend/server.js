@@ -1,9 +1,11 @@
 const express = require('express')
 const chats = require('./data/data')
 const dotenv = require('dotenv')
-
-const app = express()
+const connectDB = require("./config/db")
+const colors = require("colors");
 dotenv.config();
+connectDB()
+const app = express()
 //app.use(cors({credentials: true, origin: 'http://127.0.0.1:3000'}))
 
 app.get('/', (req, res) => {
@@ -21,4 +23,4 @@ app.get('/chat/:id', (req, res) => {
 
 const PORT = process.env.PORT;
 
-app.listen(PORT, console.log("Server has started"))
+app.listen(PORT, console.log("Server has started".yellow.bold))

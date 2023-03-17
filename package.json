@@ -9,6 +9,7 @@
   "author": "Ivan Liango",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.4.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^7.0.0",
