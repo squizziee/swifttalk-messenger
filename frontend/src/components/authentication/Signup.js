@@ -16,7 +16,11 @@ const Signup = () => {
   const [picLoading, setPicLoading] = useState(false);
 
   const handleClick = () => setShow(!show);
-  const postDetails = () => {};
+  const postDetails = (pic) => {
+    setPicLoading(true);
+    if (pic === undefined) {
+    }
+  };
   const submitHandler = () => {};
 
   return (
