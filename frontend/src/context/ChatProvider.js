@@ -20,10 +20,13 @@ const ChatProvider = ({ children }) => {
   return (
     <ChatContext.Provider
       value={{
-        user,
-        setUser,
         selectedChat,
         setSelectedChat,
+        user,
+        setUser,
+        
+        chats,
+        setChats,
       }}
     >
       {children}

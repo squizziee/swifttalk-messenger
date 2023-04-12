@@ -1,8 +1,8 @@
-import React from "react";
-import { ChatState } from "../context/ChatProvider";
 import { useToast } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
 import axios from "axios";
+import React from "react";
+import { useState, useEffect } from "react";
+import { ChatState } from "../context/ChatProvider";
 
 const MyChats = () => {
   const [loggedUser, setLoggedUser] = useState();
@@ -20,9 +20,10 @@ const MyChats = () => {
       const { data } = await axios.get("/api/chat", config);
       setChats(data);
     } catch (error) {
+      
       toast({
         title: "Error Occured!",
-        description: "Failed to Load the chats",
+        description: "Failed to Load the chats"+error,
         status: "error",
         duration: 5000,
         isClosable: true,
