@@ -55,7 +55,6 @@ const authUser = expressAsyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 });
-//api/user?search=piyush
 const allUsers = expressAsyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
@@ -70,4 +69,4 @@ const allUsers = expressAsyncHandler(async (req, res) => {
   res.send(users);
 });
 
-module.exports = { registerUser, authUser, allUsers};
+module.exports = { registerUser, authUser, allUsers };
