@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Container,
@@ -8,20 +9,18 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import Login from "../components/authentication/Login";
 import Signup from "../components/authentication/Signup";
+import Login from "../components/authentication/Login";
 
-function Homepage() {
+const Homepage = () => {
   const history = useHistory();
-
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("userInfo"));
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-    if (user) history.push("/chats");
+    if (!userInfo) history.push("/");
   }, [history]);
-
   return (
     <Container maxW="xl" centerContent>
       <Box
@@ -35,14 +34,14 @@ function Homepage() {
         borderWidth="1px"
       >
         <Text fontSize="4xl" fontFamily="Work sans">
-          Talk-A-Tive
+          SwiftTalk
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
-        <Tabs isFitted variant="soft-rounded">
+        <Tabs isFitted>
           <TabList mb="1em">
-            <Tab>Login</Tab>
-            <Tab>Sign Up</Tab>
+            <Tab width="50%">Login</Tab>
+            <Tab width="50%">Signup</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -56,6 +55,6 @@ function Homepage() {
       </Box>
     </Container>
   );
-}
+};
 
 export default Homepage;

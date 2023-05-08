@@ -111,14 +111,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.on("typing", () => setIsTyping(true));
         socket.on("stop typing", () => setIsTyping(false));
 
-
     }, []);
 
     useEffect(() => {
         fetchMessages();
 
         selectedChatCompare = selectedChat;
-
     }, [selectedChat]);
 
     useEffect(() => {
@@ -231,7 +229,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                                 <div>
                                     <Lottie
                                         options={defaultOptions}
-                                        //height={50}
+                                        // height={50}
                                         width={70}
                                         style={{ marginBottom: 15, marginLeft: 0 }}
                                     />
@@ -250,7 +248,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     </Box>
                 </>
             ) : (
-                <Box d="flex" alignItems="center" justifyContent="center" h="100%">
+                <Box display="flex" alignItems="center" justifyContent="center" h="100%">
                     <Text fontSize="3xl" pb={3} fontFamily="Work sans">
                         Click on a user to start chatting
                     </Text>
