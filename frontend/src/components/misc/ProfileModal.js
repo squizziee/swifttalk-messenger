@@ -33,7 +33,7 @@ const ProfileModal = ({ user, children }) => {
           <ModalHeader
             fontSize="40px"
             fontFamily="Work sans"
-            d="flex"
+            display="flex"
             justifyContent="center"
           >
             {user.name}

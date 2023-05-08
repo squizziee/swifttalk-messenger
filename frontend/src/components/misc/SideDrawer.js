@@ -5,7 +5,12 @@ import { Button, Input, Spinner } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/menu";
 import {
   Drawer,
   DrawerBody,
@@ -19,6 +24,7 @@ import UserListItem from "../UserAvatar/UserListItem";
 import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
+import EditModal from "./EditProfile"
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -35,6 +41,7 @@ const SideDrawer = () => {
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
     history.push("/");
+    window.location.reload();
   };
 
   const handleSearch = async () => {
@@ -143,6 +150,9 @@ const SideDrawer = () => {
               <ProfileModal user={user}>
                 <MenuItem>Profile</MenuItem>
               </ProfileModal>
+              <EditModal user={user}>
+                <MenuItem>Edit Profile</MenuItem>
+              </EditModal>
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
           </Menu>
@@ -173,7 +183,7 @@ const SideDrawer = () => {
                 />
               ))
             )}
-            {loadingChat && <Spinner ml="auto" d="flex" />}
+            {loadingChat && <Spinner ml="auto" display="flex" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
