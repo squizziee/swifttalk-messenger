@@ -20,7 +20,7 @@ import {
 import { useState } from "react";
 import { useHistory } from "react-router";
 
-const EditModal = ({ user, children }) => {
+const EditModal = ({ user, children, setLoadingPic }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
     const [pic, setPic] = useState();
@@ -35,13 +35,14 @@ const EditModal = ({ user, children }) => {
                 },
             };
             const { data } = await axios.post(
-                "/api/updatePic",
+                "/api/user/edit",
                 {
                     user,
                     pic,
                 },
                 config
             );
+            setLoadingPic(pic);
             console.log(data);
             toast({
                 title: "Updated Image",
@@ -57,6 +58,7 @@ const EditModal = ({ user, children }) => {
             console.log(existing)
             localStorage.setItem("userInfo", JSON.stringify(existing));
             setPicLoading(false);
+
         } catch (error) {
             toast({
                 title: "Error Occured!",
@@ -85,6 +87,7 @@ const EditModal = ({ user, children }) => {
         }
         console.log(pics);
         if (pics.type === "image/jpeg" || pics.type === "image/png") {
+
             const data = new FormData();
             data.append("file", pics);
             data.append("upload_preset", "chat-app");

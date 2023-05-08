@@ -13,7 +13,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-const ProfileModal = ({ user, children }) => {
+const ProfileModal = ({ user, children, loadingPic }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -22,7 +22,7 @@ const ProfileModal = ({ user, children }) => {
         <span onClick={onOpen}>{children}</span>
       ) : (
         <IconButton
-          d={{ base: "flex" }}
+          display={{ base: "flex" }}
           icon={<i className="fas fa-eye"></i>}
           onClick={onOpen}
         />
@@ -48,7 +48,7 @@ const ProfileModal = ({ user, children }) => {
             <Image
               borderRadius="full"
               boxSize="150px"
-              src={user.pic}
+              src={loadingPic}
               alt={user.name}
             />
             <Text

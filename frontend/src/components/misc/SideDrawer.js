@@ -31,6 +31,7 @@ const SideDrawer = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
+  const [loadingPic, setLoadingPic] = useState(true);
 
   const { setSelectedChat, user, chats, setChats } = ChatState();
 
@@ -94,6 +95,7 @@ const SideDrawer = () => {
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
       setSelectedChat(data);
       setLoadingChat(false);
+      setLoadingPic(user.pic);
       onClose();
     } catch (error) {
       toast({
@@ -143,14 +145,14 @@ const SideDrawer = () => {
                 size="sm"
                 cursor="pointer"
                 name={user.name}
-                src={user.pic}
+                src={loadingPic}
               />
             </MenuButton>
             <MenuList>
-              <ProfileModal user={user}>
+              <ProfileModal user={user} loadingPic={loadingPic} >
                 <MenuItem>Profile</MenuItem>
               </ProfileModal>
-              <EditModal user={user}>
+              <EditModal user={user} setLoadingPic={setLoadingPic}>
                 <MenuItem>Edit Profile</MenuItem>
               </EditModal>
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>
