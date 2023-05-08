@@ -48,7 +48,7 @@ const ProfileModal = ({ user, children, loadingPic, setLoadingPic }) => {
             <Image
               borderRadius="full"
               boxSize="150px"
-              src={loadingPic ? loadingPic : setLoadingPic(user.pic)}
+              src={loadingPic ? loadingPic : user.pic}
               alt={user.name}
             />
             <Text
