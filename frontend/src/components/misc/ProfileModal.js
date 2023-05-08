@@ -13,7 +13,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-const ProfileModal = ({ user, children, loadingPic }) => {
+const ProfileModal = ({ user, children, loadingPic, setLoadingPic }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -48,7 +48,7 @@ const ProfileModal = ({ user, children, loadingPic }) => {
             <Image
               borderRadius="full"
               boxSize="150px"
-              src={loadingPic}
+              src={loadingPic ? loadingPic : setLoadingPic(user.pic)}
               alt={user.name}
             />
             <Text

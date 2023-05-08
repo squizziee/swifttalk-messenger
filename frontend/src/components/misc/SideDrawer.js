@@ -31,7 +31,7 @@ const SideDrawer = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
-  const [loadingPic, setLoadingPic] = useState(true);
+  const [loadingPic, setLoadingPic] = useState(false);
 
   const { setSelectedChat, user, chats, setChats } = ChatState();
 
@@ -44,6 +44,8 @@ const SideDrawer = () => {
     history.push("/");
     window.location.reload();
   };
+
+
 
   const handleSearch = async () => {
     if (!search) {
@@ -80,6 +82,7 @@ const SideDrawer = () => {
       });
     }
   };
+
 
   const accessChat = async (userId) => {
     try {
@@ -122,7 +125,7 @@ const SideDrawer = () => {
       >
         <Button variant="ghost" onClick={onOpen}>
           <i className="fas fa-search"></i>
-          <Text d={{ base: "none", md: "flex" }} px="4">
+          <Text display={{ base: "none", md: "flex" }} px="4">
             Search
           </Text>
         </Button>
@@ -145,11 +148,11 @@ const SideDrawer = () => {
                 size="sm"
                 cursor="pointer"
                 name={user.name}
-                src={loadingPic}
+                src={loadingPic ? loadingPic : setLoadingPic(user.pic)}
               />
             </MenuButton>
             <MenuList>
-              <ProfileModal user={user} loadingPic={loadingPic} >
+              <ProfileModal user={user} loadingPic={loadingPic} setLoadingPic={setLoadingPic}>
                 <MenuItem>Profile</MenuItem>
               </ProfileModal>
               <EditModal user={user} setLoadingPic={setLoadingPic}>
