@@ -5,7 +5,12 @@ import { Button, Input, Spinner } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/menu";
 import {
   Drawer,
   DrawerBody,
@@ -19,12 +24,14 @@ import UserListItem from "../UserAvatar/UserListItem";
 import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
+import EditModal from "./EditProfile"
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
+  const [loadingPic, setLoadingPic] = useState(false);
 
   const { setSelectedChat, user, chats, setChats } = ChatState();
 
@@ -35,7 +42,10 @@ const SideDrawer = () => {
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
     history.push("/");
+    window.location.reload();
   };
+
+
 
   const handleSearch = async () => {
     if (!search) {
@@ -73,6 +83,7 @@ const SideDrawer = () => {
     }
   };
 
+
   const accessChat = async (userId) => {
     try {
       setLoadingChat(true);
@@ -87,6 +98,7 @@ const SideDrawer = () => {
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
       setSelectedChat(data);
       setLoadingChat(false);
+      setLoadingPic(user.pic);
       onClose();
     } catch (error) {
       toast({
@@ -113,7 +125,7 @@ const SideDrawer = () => {
       >
         <Button variant="ghost" onClick={onOpen}>
           <i className="fas fa-search"></i>
-          <Text d={{ base: "none", md: "flex" }} px="4">
+          <Text display={{ base: "none", md: "flex" }} px="4">
             Search
           </Text>
         </Button>
@@ -136,13 +148,16 @@ const SideDrawer = () => {
                 size="sm"
                 cursor="pointer"
                 name={user.name}
-                src={user.pic}
+                src={loadingPic ? loadingPic : setLoadingPic(user.pic)}
               />
             </MenuButton>
             <MenuList>
-              <ProfileModal user={user}>
+              <ProfileModal user={user} loadingPic={loadingPic} setLoadingPic={setLoadingPic}>
                 <MenuItem>Profile</MenuItem>
               </ProfileModal>
+              <EditModal user={user} setLoadingPic={setLoadingPic}>
+                <MenuItem>Edit Profile</MenuItem>
+              </EditModal>
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
           </Menu>
@@ -173,7 +188,7 @@ const SideDrawer = () => {
                 />
               ))
             )}
-            {loadingChat && <Spinner ml="auto" d="flex" />}
+            {loadingChat && <Spinner ml="auto" display="flex" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
