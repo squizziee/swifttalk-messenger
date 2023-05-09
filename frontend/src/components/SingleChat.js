@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ProfileModal from "./misc/ProfileModal";
 import ScrollableChat from "./ScrollableChat";
-import Lottie from "lottie-react";
+import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./misc/UpdateGroupChatModal";
@@ -142,7 +142,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       socket.emit("typing", selectedChat._id);
     }
     let lastTypingTime = new Date().getTime();
-    var timerLength = 3000;
+    var timerLength = 1000;
     setTimeout(() => {
       var timeNow = new Date().getTime();
       var timeDiff = timeNow - lastTypingTime;
