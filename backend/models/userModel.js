@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const generateToken = require("../config/generateToken");
 
 const userSchema = mongoose.Schema(
   {
     name: { type: "String", required: true },
     email: { type: "String", unique: true, required: true, unqiue: true },
     password: { type: "String", required: true },
+    activated: { type: Boolean },
+    activationKey: { type: String, default: "" },
     pic: {
       type: "String",
       default:
