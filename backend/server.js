@@ -7,6 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const User = require("./models/userModel");
 
 dotenv.config();
 connectDB();
@@ -21,7 +22,20 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
+app.get("/verify/:uniqueString", async (req, res) => {
+  const { uniqueString } = req.params;
+  const filter = { activationKey: uniqueString };
+  const update = { activated: true };
+  const user = await User.findOneAndUpdate(filter, update, {
+    new: true,
+  });
 
+  /*if (user) {
+    res.redirect("/");
+  } else {
+    res.json("User not found");
+  }*/
+});
 app.use(notFound);
 app.use(errorHandler);
 
