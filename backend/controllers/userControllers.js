@@ -85,7 +85,7 @@ const authUser = expressAsyncHandler(async (req, res) => {
   }
 
   if (user && (await user.matchPassword(password))) {
-    res.json({
+    res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -99,6 +99,7 @@ const authUser = expressAsyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 });
+
 const allUsers = expressAsyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {

@@ -81,3 +81,5 @@ io.on("connection", (socket) => {
     socket.leave(userData._id);
   });
 });
+
+exports.default = server;
