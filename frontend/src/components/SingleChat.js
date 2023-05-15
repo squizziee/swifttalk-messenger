@@ -13,6 +13,9 @@ import animationData from "../animations/typing.json";
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./misc/UpdateGroupChatModal";
 import { ChatState } from "../context/ChatProvider";
+import CryptoJS from "crypto-js";
+const { AES } = CryptoJS;
+const createECDH = require('create-ecdh/browser')
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 
@@ -47,14 +50,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       };
 
       setLoading(true);
-
-      const { data } = await axios.get(
+      const response = await axios.get(
         `/api/message/${selectedChat._id}`,
         config
       );
+      const { data } = response;
+      if (!selectedChat.isGroupChat) {
+        const publicKeyOfOtherUserStr = getSenderFull(user, selectedChat.users).publicKey;
+        const pvkStr = localStorage.getItem("pvk");
+        const pvkParse = JSON.parse(pvkStr);
+        const pvk = Buffer.from(pvkParse.data);
+        const ecdh = createECDH("secp256k1");
+        ecdh.setPrivateKey(pvk);
+        const publicKeyOfOtherUserParsed = JSON.parse(publicKeyOfOtherUserStr);
+        const publicKeyOfOtherUser = Buffer.from(publicKeyOfOtherUserParsed.data);
+        const passphraseOfOtherUser = ecdh.computeSecret(publicKeyOfOtherUser).toString("hex");
+        data.forEach(message => {
+          message.content = AES.decrypt(message.content, passphraseOfOtherUser).toString(
+            CryptoJS.enc.Utf8
+          );
+        });
+      }
       setMessages(data);
       setLoading(false);
-
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast({
@@ -78,18 +96,48 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        setNewMessage("");
-        const { data } = await axios.post(
-          "/api/message",
-          {
-            content: newMessage,
-            chatId: selectedChat,
-          },
-          config
-        );
-        socket.emit("new message", data);
-        setMessages([...messages, data]);
+        if (!selectedChat.isGroupChat) {
+          const publicKeyOfOtherUserStr = getSenderFull(user, selectedChat.users).publicKey;
+          const pvkStr = localStorage.getItem("pvk");
+          const pvkParse = JSON.parse(pvkStr);
+          const pvk = Buffer.from(pvkParse.data);
+          const ecdh = createECDH("secp256k1");
+          ecdh.setPrivateKey(pvk);
+          const publicKeyOfOtherUserParsed = JSON.parse(publicKeyOfOtherUserStr);
+          const publicKeyOfOtherUser = Buffer.from(publicKeyOfOtherUserParsed.data);
+          const passphraseOfOtherUser = ecdh.computeSecret(publicKeyOfOtherUser).toString("hex");
+          if (!ecdh) return console.log("ECDH is null");
+          const newMessage1 = AES.encrypt(newMessage, passphraseOfOtherUser).toString();
+          setNewMessage("");
+          const { data } = await axios.post(
+            "/api/message",
+            {
+              content: newMessage1,
+              chatId: selectedChat,
+            },
+            config
+          );
+          data.content = AES.decrypt(data.content, passphraseOfOtherUser).toString(
+            CryptoJS.enc.Utf8
+          );
+
+          socket.emit("new message", data);
+          setMessages([...messages, data]);
+        } else {
+          setNewMessage("");
+          const { data } = await axios.post(
+            "/api/message",
+            {
+              content: newMessage,
+              chatId: selectedChat,
+            },
+            config
+          );
+          socket.emit("new message", data);
+          setMessages([...messages, data]);
+        }
       } catch (error) {
+        console.log(error);
         toast({
           title: "Error Occured!",
           description: "Failed to send the Message",
