@@ -34,7 +34,7 @@ const sendEmail = (email, uniqueString) => {
 };
 
 const registerUser = expressAsyncHandler(async (req, res) => {
-  const { name, email, password, pic } = req.body;
+  const { name, email, password, pic, publicKey, privateKeyCipher } = req.body;
 
   if (!name || !email || !password) {
     res.status(400);
@@ -55,6 +55,8 @@ const registerUser = expressAsyncHandler(async (req, res) => {
     pic,
     activated: false,
     activationKey: _token,
+    publicKey,
+    privateKeyCipher,
   });
   if (user) {
     res.status(201).json({
@@ -64,6 +66,7 @@ const registerUser = expressAsyncHandler(async (req, res) => {
       activated: false,
       pic: user.pic,
       token: _token,
+      publicKey: publicKey,
     });
   } else {
     res.status(400);
@@ -88,6 +91,8 @@ const authUser = expressAsyncHandler(async (req, res) => {
       email: user.email,
       pic: user.pic,
       token: generateToken(user._id),
+      publicKey: user.publicKey,
+      privateKeyCipher: user.privateKeyCipher,
     });
   } else {
     res.status(401);

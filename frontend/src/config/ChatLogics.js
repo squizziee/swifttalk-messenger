@@ -1,3 +1,7 @@
+import CryptoJS from "crypto-js";
+const { AES } = CryptoJS;
+const createECDH = require('create-ecdh/browser')
+
 export const isSameSenderMargin = (messages, m, i, userId) => {
   // console.log(i === messages.length - 1);
 
@@ -51,3 +55,22 @@ export const getSenderFull = (loggedUser, users) => {
   }
   return users[0]._id === loggedUser._id ? users[1] : users[0];
 };
+
+export const getLastMessageContent = (chat, loggedUser) => {
+  if (!chat.isGroupChat) {
+    const publicKeyOfOtherUserStr = getSenderFull(loggedUser, chat.users).publicKey;
+    const pvkStr = localStorage.getItem("pvk");
+    const pvkParse = JSON.parse(pvkStr);
+    const pvk = Buffer.from(pvkParse.data);
+    const ecdh = createECDH("secp256k1");
+    ecdh.setPrivateKey(pvk);
+    const publicKeyOfOtherUserParsed = JSON.parse(publicKeyOfOtherUserStr);
+    const publicKeyOfOtherUser = Buffer.from(publicKeyOfOtherUserParsed.data);
+    const passphraseOfOtherUser = ecdh.computeSecret(publicKeyOfOtherUser).toString("hex");
+    return AES.decrypt(chat.latestMessage.content, passphraseOfOtherUser).toString(
+      CryptoJS.enc.Utf8
+    );
+  } else {
+    return chat.latestMessage.content;
+  }
+}

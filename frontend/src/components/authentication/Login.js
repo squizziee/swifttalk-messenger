@@ -4,6 +4,8 @@ import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
 import { useState } from "react";
 import axios from "axios";
+import CryptoJS from "crypto-js";
+import pbkdf2 from "pbkdf2";
 import { useToast } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
@@ -55,6 +57,15 @@ const Login = () => {
         position: "bottom",
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
+      const passphrase = pbkdf2
+        .pbkdf2Sync(password, email, 25000, 64, "sha512")
+        .toString("hex");
+      const privateKeyStr = CryptoJS.AES.decrypt(
+        data.privateKeyCipher,
+        passphrase
+      ).toString(CryptoJS.enc.Utf8);
+      localStorage.setItem("pvk", privateKeyStr);
+      localStorage.setItem("pbk", data.publicKey);
       const userInfo1 = JSON.parse(localStorage.getItem("userInfo"));
       setUser(userInfo1);
       setLoading(false);
