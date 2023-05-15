@@ -97,11 +97,11 @@ const authUser = expressAsyncHandler(async (req, res) => {
 const allUsers = expressAsyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
-      $or: [
-        { name: { $regex: req.query.search, $options: "i" } },
-        { email: { $regex: req.query.search, $options: "i" } },
-      ],
-    }
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
@@ -109,8 +109,8 @@ const allUsers = expressAsyncHandler(async (req, res) => {
 });
 
 const updateUser = expressAsyncHandler(async (req, res) => {
-  const { pic, user } = req.body
-  console.log(pic, user.email)
+  const { pic, user } = req.body;
+  console.log(pic, user.email);
   const update = async () => {
     const result = await User.updateOne(
       {
@@ -119,14 +119,13 @@ const updateUser = expressAsyncHandler(async (req, res) => {
       {
         $set: {
           pic: pic,
-        }
+        },
       }
-    )
-    console.log(result)
-    res.status(200).send("updated Image")
-  }
+    );
+    console.log(result);
+    res.status(200).send("updated Image");
+  };
   update();
-
 });
 
 module.exports = { registerUser, authUser, allUsers, updateUser };
