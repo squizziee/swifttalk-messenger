@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ChakraProvider,
   Box,
   Container,
   Tab,
@@ -22,26 +23,34 @@ const Homepage = () => {
     if (!userInfo) history.push("/");
   }, [history]);
   return (
-    <Container maxW="xl" centerContent>
+    <Container 
+      maxW="xl" 
+      centerContent
+      position='absolute'
+      left='50%'
+      top='40%'
+      transform='translate(-50%, -40%)'
+    >
       <Box
         d="flex"
         justifyContent="center"
+        alignItems="center"
         p={3}
         bg="white"
         w="100%"
-        m="40px 0 15px 0"
+        m="15px 0 15px 0"
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Text fontSize="4xl" fontFamily="Work sans">
+        <Text textAlign='center' fontSize = "4xl" fontWeight='800'>
           SwiftTalk
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
-        <Tabs isFitted>
+        <Tabs isFitted variant="enclosed" colorScheme="swift">
           <TabList mb="1em">
             <Tab width="50%">Login</Tab>
-            <Tab width="50%">Signup</Tab>
+            <Tab width="50%">Sign up</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
