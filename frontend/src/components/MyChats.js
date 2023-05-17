@@ -3,7 +3,7 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getSender } from "../config/ChatLogics";
+import { getSender, getLastMessageContent } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./misc/GroupChatModal";
 import { Button } from "@chakra-ui/react";
@@ -107,9 +107,9 @@ const MyChats = ({ fetchAgain }) => {
                 {chat.latestMessage && (
                   <Text fontSize="xs">
                     <b>{chat.latestMessage.sender.name} : </b>
-                    {chat.latestMessage.content.length > 50
-                      ? chat.latestMessage.content.substring(0, 51) + "..."
-                      : chat.latestMessage.content}
+                    {getLastMessageContent(chat, loggedUser).length > 50
+                      ? getLastMessageContent(chat, loggedUser).substring(0, 51) + "..."
+                      : getLastMessageContent(chat, loggedUser)}
                   </Text>
                 )}
               </Box>

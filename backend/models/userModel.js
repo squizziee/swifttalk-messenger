@@ -19,6 +19,15 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    publicKey: {
+      type: "String"
+    },
+    privateKeyCipher: {
+      type: "String"
+    },
+    bio: {
+      type: "String", default: ""
+    },
   },
   {
     timestaps: true,

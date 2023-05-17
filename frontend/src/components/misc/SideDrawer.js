@@ -5,12 +5,10 @@ import { Button, Input, Spinner } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/menu";
+import { getSender } from "../../config/ChatLogics";
+import NotificationBadge from "react-notification-badge";
+import { Effect } from "react-notification-badge";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import {
   Drawer,
   DrawerBody,
@@ -24,7 +22,7 @@ import UserListItem from "../UserAvatar/UserListItem";
 import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
-import EditModal from "./EditProfile"
+import EditModal from "./EditProfile";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -33,7 +31,14 @@ const SideDrawer = () => {
   const [loadingChat, setLoadingChat] = useState(false);
   const [loadingPic, setLoadingPic] = useState(false);
 
-  const { setSelectedChat, user, chats, setChats } = ChatState();
+  const {
+    setSelectedChat,
+    user,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
 
   const toast = useToast();
   const history = useHistory();
@@ -44,8 +49,6 @@ const SideDrawer = () => {
     history.push("/");
     window.location.reload();
   };
-
-
 
   const handleSearch = async () => {
     if (!search) {
@@ -82,7 +85,6 @@ const SideDrawer = () => {
       });
     }
   };
-
 
   const accessChat = async (userId) => {
     try {
@@ -135,9 +137,28 @@ const SideDrawer = () => {
         <div>
           <Menu>
             <MenuButton p={1}>
+              <NotificationBadge
+                count={notification.length}
+                effect={Effect.SCALE}
+              />
               <i className="fas fa-bell"></i>
             </MenuButton>
-            {/*<MenuList pl={2}></MenuList>*/}
+            <MenuList pl={2}>
+              {!notification.length && "No New Messages"}
+              {notification.map((notif) => (
+                <MenuItem
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotification(notification.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New Message in ${notif.chat.chatName}`
+                    : `New Message from ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
           </Menu>
           <Menu>
             <MenuButton
@@ -152,7 +173,11 @@ const SideDrawer = () => {
               />
             </MenuButton>
             <MenuList>
-              <ProfileModal user={user} loadingPic={loadingPic} setLoadingPic={setLoadingPic}>
+              <ProfileModal
+                user={user}
+                loadingPic={loadingPic}
+                setLoadingPic={setLoadingPic}
+              >
                 <MenuItem>Profile</MenuItem>
               </ProfileModal>
               <EditModal user={user} setLoadingPic={setLoadingPic}>

@@ -7,6 +7,8 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import CryptoJS from "crypto-js";
+import pbkdf2 from "pbkdf2";
 import axios from "axios";
 
 const Signup = () => {
@@ -95,14 +97,24 @@ const Signup = () => {
       setPicLoading(false);
       return;
     }
-
     try {
       const config = {
         headers: {
           "Content-type": "application/json",
         },
       };
-
+      const createECDH = require('create-ecdh/browser');
+      const ecdh = createECDH('secp256k1');
+      ecdh.generateKeys()
+      const publicKey = JSON.stringify(ecdh.getPublicKey());
+      const privateKey = JSON.stringify(ecdh.getPrivateKey());
+      const passphrase = pbkdf2
+        .pbkdf2Sync(password, email, 25000, 64, "sha512")
+        .toString("hex");
+      const privateKeyCipher = CryptoJS.AES.encrypt(
+        privateKey,
+        passphrase
+      ).toString();
       const { data } = await axios.post(
         "api/user",
         {
@@ -110,6 +122,8 @@ const Signup = () => {
           email,
           password,
           pic,
+          publicKey,
+          privateKeyCipher,
         },
         config
       );
