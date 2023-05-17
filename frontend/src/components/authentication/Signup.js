@@ -6,6 +6,7 @@ import { VStack } from "@chakra-ui/layout";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import CryptoJS from "crypto-js";
 import pbkdf2 from "pbkdf2";
 import axios from "axios";
@@ -22,7 +23,13 @@ const Signup = () => {
   const toast = useToast();
   const history = useHistory();
 
+  const hiddenFileRef = React.useRef(null);
+
   const handleClick = () => setShow(!show);
+  const handleUpdate = event => {
+    hiddenFileRef.current.click();
+  }
+
   const postDetails = (pic) => {
     setPicLoading(true);
     if (pic === undefined) {
@@ -145,7 +152,7 @@ const Signup = () => {
   };
 
   return (
-    <VStack spacing="5px">
+    <VStack spacing="15px">
       <FormControl id="first-name" isRequired>
         <FormLabel>Name</FormLabel>
         <Input
@@ -171,7 +178,7 @@ const Signup = () => {
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
+            {show ? <ViewOffIcon/> : <ViewIcon/>}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -186,22 +193,27 @@ const Signup = () => {
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
+            {show ? <ViewOffIcon/> : <ViewIcon/>}
             </Button>
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      <FormControl id="pic">
+      <FormControl id="pic" >
         <FormLabel>Upload your Picture</FormLabel>
+        <Button size="md" onClick={handleUpdate}>
+          Choose a photo
+        </Button>
         <Input
+          ref={hiddenFileRef}
           type="file"
           p={1.5}
           accept="image/*"
           onChange={(e) => postDetails(e.target.files[0])}
+          style={{display: 'none'}}
         />
       </FormControl>
       <Button
-        colorScheme="teal"
+        colorScheme="swift"
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}
