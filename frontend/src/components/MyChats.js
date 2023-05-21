@@ -51,7 +51,8 @@ const MyChats = ({ fetchAgain }) => {
       alignItems="center"
       p={3}
       bg="white"
-      w={{ base: "100%", md: "31%" }}
+      w={{ base: "100%", md: "32%" }}
+      mr={3}
       borderRadius="lg"
       borderWidth="1px"
     >
@@ -59,11 +60,11 @@ const MyChats = ({ fetchAgain }) => {
         pb={3}
         px={3}
         fontSize={{ base: "28px", md: "30px" }}
-        fontFamily="Work sans"
         display="flex"
         w="100%"
         justifyContent="space-between"
         alignItems="center"
+        fontWeight="medium"
       >
         My Chats
         <GroupChatModal>
@@ -80,7 +81,7 @@ const MyChats = ({ fetchAgain }) => {
         display="flex"
         flexDir="column"
         p={3}
-        bg="#F8F8F8"
+        bg="#F6F8FB"
         w="100%"
         h="100%"
         borderRadius="lg"
@@ -92,20 +93,21 @@ const MyChats = ({ fetchAgain }) => {
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
-                bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+                bg={selectedChat === chat ? "#fc839f" : "#eef2f7"}
                 color={selectedChat === chat ? "white" : "black"}
                 px={3}
                 py={2}
                 borderRadius="lg"
+                borderWidth="1px"
                 key={chat._id}
               >
-                <Text>
+                <Text fontWeight="bold">
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
                     : chat.chatName}
                 </Text>
                 {chat.latestMessage && (
-                  <Text fontSize="xs">
+                  <Text fontSize="xs" fontWeight="medium">
                     <b>{chat.latestMessage.sender.name} : </b>
                     {getLastMessageContent(chat, loggedUser).length > 50
                       ? getLastMessageContent(chat, loggedUser).substring(0, 51) + "..."

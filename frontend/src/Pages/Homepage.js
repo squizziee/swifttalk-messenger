@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  ChakraProvider,
   Box,
   Container,
   Tab,
@@ -10,7 +9,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router";
 import Signup from "../components/authentication/Signup";
 import Login from "../components/authentication/Login";

@@ -117,13 +117,15 @@ const SideDrawer = () => {
   return (
     <>
       <Box
+        m="10px 10px 0px 10px"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         bg="white"
-        w="100%"
+        //width="99%"
         p="5px 10px 5px 10px"
-        borderWidth="5px"
+        borderWidth="1px"
+        borderRadius="lg"
       >
         <Button variant="ghost" onClick={onOpen}>
           <i className="fas fa-search"></i>
@@ -131,17 +133,19 @@ const SideDrawer = () => {
             Search
           </Text>
         </Button>
-        <Text fontSize="2xl" fontFamily="Work sans">
+        <Text fontSize="2xl" fontWeight="bold">
           SwiftTalk Alpha
         </Text>
         <div>
           <Menu>
-            <MenuButton p={1}>
+            <MenuButton p={2}>
+              <Button>
               <NotificationBadge
                 count={notification.length}
                 effect={Effect.SCALE}
               />
               <i className="fas fa-bell"></i>
+              </Button>
             </MenuButton>
             <MenuList pl={2}>
               {!notification.length && "No New Messages"}
@@ -163,10 +167,10 @@ const SideDrawer = () => {
           <Menu>
             <MenuButton
               as={Button}
-              rightIcon={<i className="fas fa-search"></i>}
+              //rightIcon={<i className="fas fa-search"></i>}
             >
               <Avatar
-                size="sm"
+                size="xs"
                 cursor="pointer"
                 name={user.name}
                 src={loadingPic ? loadingPic : setLoadingPic(user.pic)}
@@ -183,7 +187,7 @@ const SideDrawer = () => {
               <EditModal user={user} setLoadingPic={setLoadingPic}>
                 <MenuItem>Edit Profile</MenuItem>
               </EditModal>
-              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+              <MenuItem onClick={logoutHandler} color="red">Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>
