@@ -111,7 +111,7 @@ const allUsers = expressAsyncHandler(async (req, res) => {
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
-  res.send(users);
+  res.status(200).send(users);
 });
 
 const updateUser = expressAsyncHandler(async (req, res) => {

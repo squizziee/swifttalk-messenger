@@ -3,6 +3,7 @@ import axios from "axios";
 const server = require("../backend/server");
 const dotenv = require("dotenv");
 import connectDB from "../backend/config/db";
+import User from "../backend/models/userModel";
 //import db from "./config/database";
 const request = require("supertest");
 
@@ -50,4 +51,69 @@ test("Authentication test", async () => {
     config
   );
   expect(response.status).toBe(201);
+});
+
+test("User update test", async () => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  const user = User.findOne({ email: "wfsffsfsfg" });
+  const response = await axios.post(
+    "/api/user/edit",
+    {
+      user,
+      pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+    },
+    config
+  );
+  expect(response.status).toBe(200);
+});
+
+test("User search test", async () => {
+  const search = " ";
+  const user = User.findOne({ email: "wfsffsfsfg" });
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
+  const response = await axios.get(`/api/user?search=${search}`, config);
+  expect(response.status).toBe(200);
+});
+
+test("Group create test", async () => {
+  const user = User.findOne({ email: "wfsffsfsfg" });
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
+  const response = await axios.post(
+    `/api/chat/group`,
+    {
+      name: "random",
+      users: JSON.stringify(selectedUsers.map((u) => u._id)),
+    },
+    config
+  );
+  expect(response.status).toBe(400);
+});
+
+test("Group rename test", async () => {
+  const user = User.findOne({ email: "wfsffsfsfg" });
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
+  const response = await axios.post(
+    `/api/chat/group`,
+    {
+      name: "random",
+    },
+    config
+  );
+  expect(response.status).toBe(400);
 });
