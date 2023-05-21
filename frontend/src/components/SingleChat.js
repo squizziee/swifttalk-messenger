@@ -249,7 +249,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           config
         );
         await axios.post(
-          `/api/message/file).`,
+          `/api/message/file`,
           {
             filename: file.format,
             size: (file.bytes / 1024),
