@@ -16,7 +16,7 @@ import { ChatState } from "../context/ChatProvider";
 import CryptoJS from "crypto-js";
 const { AES } = CryptoJS;
 const createECDH = require('create-ecdh/browser')
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "http://localhost:6000";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
