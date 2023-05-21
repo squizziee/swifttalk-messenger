@@ -2,8 +2,10 @@ import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import "./styles.css";
-import { IconButton, Spinner, useToast } from "@chakra-ui/react";
-import { getSender, getSenderFull } from "../config/ChatLogics";
+import React from "react";
+import { useRef } from 'react';
+import { IconButton, Spinner, useToast, Flex, VisuallyHidden } from "@chakra-ui/react";
+import { getSender, getSenderFull, getPassphraseOfOtherUser } from "../config/ChatLogics";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProfileModal from "./misc/ProfileModal";
@@ -14,8 +16,8 @@ import io from "socket.io-client";
 import UpdateGroupChatModal from "./misc/UpdateGroupChatModal";
 import { ChatState } from "../context/ChatProvider";
 import CryptoJS from "crypto-js";
+import { Button } from "@chakra-ui/button";
 const { AES } = CryptoJS;
-const createECDH = require('create-ecdh/browser')
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 
@@ -26,7 +28,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
+  const [file, setFile] = useState();
   const toast = useToast();
+  const fileInputRef = useRef(null);
 
   const defaultOptions = {
     loop: true,
@@ -57,14 +61,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       const { data } = response;
       if (!selectedChat.isGroupChat) {
         const publicKeyOfOtherUserStr = getSenderFull(user, selectedChat.users).publicKey;
-        const pvkStr = localStorage.getItem("pvk");
-        const pvkParse = JSON.parse(pvkStr);
-        const pvk = Buffer.from(pvkParse.data);
-        const ecdh = createECDH("secp256k1");
-        ecdh.setPrivateKey(pvk);
-        const publicKeyOfOtherUserParsed = JSON.parse(publicKeyOfOtherUserStr);
-        const publicKeyOfOtherUser = Buffer.from(publicKeyOfOtherUserParsed.data);
-        const passphraseOfOtherUser = ecdh.computeSecret(publicKeyOfOtherUser).toString("hex");
+        const passphraseOfOtherUser = getPassphraseOfOtherUser(publicKeyOfOtherUserStr);
         data.forEach(message => {
           message.content = AES.decrypt(message.content, passphraseOfOtherUser).toString(
             CryptoJS.enc.Utf8
@@ -72,9 +69,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         });
       }
       setMessages(data);
+      console.log(data);
       setLoading(false);
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
+      console.log(error);
       toast({
         title: "Error Occured!",
         description: "Failed to Load the Messages",
@@ -98,15 +97,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         };
         if (!selectedChat.isGroupChat) {
           const publicKeyOfOtherUserStr = getSenderFull(user, selectedChat.users).publicKey;
-          const pvkStr = localStorage.getItem("pvk");
-          const pvkParse = JSON.parse(pvkStr);
-          const pvk = Buffer.from(pvkParse.data);
-          const ecdh = createECDH("secp256k1");
-          ecdh.setPrivateKey(pvk);
-          const publicKeyOfOtherUserParsed = JSON.parse(publicKeyOfOtherUserStr);
-          const publicKeyOfOtherUser = Buffer.from(publicKeyOfOtherUserParsed.data);
-          const passphraseOfOtherUser = ecdh.computeSecret(publicKeyOfOtherUser).toString("hex");
-          if (!ecdh) return console.log("ECDH is null");
+          const passphraseOfOtherUser = getPassphraseOfOtherUser(publicKeyOfOtherUserStr);
           const newMessage1 = AES.encrypt(newMessage, passphraseOfOtherUser).toString();
           setNewMessage("");
           const { data } = await axios.post(
@@ -201,6 +192,163 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }, timerLength);
   };
 
+  useEffect(() => {
+    sendFile();
+  }, [file]);
+
+  const sendFile = async () => {
+    if (!selectedChat) return;
+    try {
+      const message = "Share with you my file:"
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      if (!selectedChat.isGroupChat) {
+        const publicKeyOfOtherUserStr = getSenderFull(user, selectedChat.users).publicKey;
+        const passphraseOfOtherUser = getPassphraseOfOtherUser(publicKeyOfOtherUserStr);
+        const newMessage1 = AES.encrypt(message, passphraseOfOtherUser).toString();
+        const { data } = await axios.post(
+          "/api/message",
+          {
+            content: newMessage1,
+            chatId: selectedChat,
+          },
+          config
+        );
+        await axios.post(
+          `/api/message/file`,
+          {
+            filename: file.format,
+            size: (file.bytes / 1024),
+            url: file.url,
+            messageId: data._id,
+          },
+          config
+        );
+        const lastMessage = await axios.get(
+          `/api/message/get/${data._id}`,
+          config
+        );
+        console.log(lastMessage.data[0].content);
+        lastMessage.data[0].content = AES.decrypt(lastMessage.data[0].content, passphraseOfOtherUser).toString(
+          CryptoJS.enc.Utf8
+        );
+        console.log(lastMessage.data[0]);
+        socket.emit("new message", lastMessage.data[0]);
+        setMessages([...messages, lastMessage.data[0]]);
+      } else {
+        const { data } = await axios.post(
+          "/api/message",
+          {
+            content: message,
+            chatId: selectedChat,
+          },
+          config
+        );
+        await axios.post(
+          `/api/message/file).`,
+          {
+            filename: file.format,
+            size: (file.bytes / 1024),
+            url: file.url,
+            messageId: data._id,
+          },
+          config
+        );
+        const lastMessage = await axios.get(
+          `/api/message/get/${data._id}`,
+          config
+        );
+        console.log(lastMessage.data[0]);
+        socket.emit("new message", lastMessage.data[0]);
+        setMessages([...messages, lastMessage.data[0]]);
+      }
+      toast({
+        title: "Send File",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error Occured!",
+        description: "Failed to send the File",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  };
+
+  const postDetails = (file) => {
+    if (file === undefined) {
+      toast({
+        title: "Please select a file",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    if (file.type === "image/jpeg" ||
+      file.type === "image/png" ||
+      file.type === "application/x-7z-compressed" ||
+      file.type === "text/x-c++src" ||
+      file.type === "application/x-zip-compressed" ||
+      file.type === "application/pdf") {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "swifttalk-messenger");
+      data.append("cloud_name", "dtcs5od9f");
+      fetch("https://api.cloudinary.com/v1_1/dtcs5od9f/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setFile(data);
+          console.log(data);
+          console.log(data.format);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      console.log(data);
+      toast({
+        title: "Send File",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    } else {
+      toast({
+        title: "Please select a file",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    postDetails(file);
+  };
+
+  const handleChooseFile = () => {
+    fileInputRef.current.click();
+  };
+
   return (
     <>
       {selectedChat ? (
@@ -269,6 +417,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               id="first-name"
               isRequired
               mt={3}
+              display="flex"
+              alignItems="center"
             >
               {istyping ? (
                 <div>
@@ -288,7 +438,28 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}
+                flex="1"
+                marginRight={2}
               />
+              <Flex alignItems="center">
+                <Box as="label" htmlFor="file-input">
+                  <VisuallyHidden>
+                    <Input
+                      id="file-input"
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                    />
+                  </VisuallyHidden>
+                  <Button
+                    colorScheme="blue"
+                    width="100%"
+                    onClick={handleChooseFile}
+                  >
+                    Choose File
+                  </Button>
+                </Box>
+              </Flex>
             </FormControl>
           </Box>
         </>

@@ -5,6 +5,8 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.6.1",
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.10.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -58,6 +60,6 @@
   },
   "browser": {
     "crypto": false,
-    "stream":false
+    "stream": false
   }
 }
