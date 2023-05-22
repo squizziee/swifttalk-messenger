@@ -33,10 +33,9 @@ const ProfileModal = ({ user, children, loadingPic, setLoadingPic }) => {
           <ModalHeader
             fontSize="40px"
             fontFamily="Work sans"
-            display="flex"
-            justifyContent="center"
           >
-            {user.name}
+            <h1 style={{ display:'flex', justifyContent:'center'}}>{user.name}</h1>
+            <h2 style={{ fontSize:"20px", fontWeight:"400", display:'flex', justifyContent:'center'}}>'user.tag'</h2>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody

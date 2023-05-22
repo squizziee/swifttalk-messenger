@@ -130,13 +130,15 @@ const EditModal = ({ user, children, setLoadingPic }) => {
             <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
                 <ModalOverlay />
                 <ModalContent h="410px">
-                    <ModalHeader
-                        fontSize="40px"
-                        fontFamily="Work sans"
-                        display="flex"
-                        justifyContent="center"
-                    >
-                        {user.name}
+                    <ModalHeader>
+                        <div style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+                            <h1 style={{ fontSize:"40px"}}>{user.name}</h1>
+                            <IconButton color='gray' variant='ghost' icon={<i class="fa-solid fa-pen"></i>} ml={2} /*onClick={}*/ />
+                        </div>
+                        <div style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+                                <h2 style={{ fontSize:"17px", fontWeight:"500"}}>'user.tag'</h2>
+                                <IconButton color='gray' variant='ghost' icon={<i class="fa-solid fa-pen"></i>} ml={2} size="xs" /*onClick={}*/ />
+                        </div>
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody
