@@ -11,6 +11,10 @@ const messageModel = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Chat"
         },
+        attachments: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "UploadFile"
+        },
     },
     {
         timestamps: true

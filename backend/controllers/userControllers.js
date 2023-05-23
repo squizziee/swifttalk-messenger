@@ -93,6 +93,7 @@ const authUser = expressAsyncHandler(async (req, res) => {
       token: generateToken(user._id),
       publicKey: user.publicKey,
       privateKeyCipher: user.privateKeyCipher,
+      bio: user.bio,
     });
   } else {
     res.status(401);
@@ -102,11 +103,11 @@ const authUser = expressAsyncHandler(async (req, res) => {
 const allUsers = expressAsyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { email: { $regex: req.query.search, $options: "i" } },
-        ],
-      }
+      $or: [
+        { name: { $regex: req.query.search, $options: "i" } },
+        { email: { $regex: req.query.search, $options: "i" } },
+      ],
+    }
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
@@ -114,23 +115,32 @@ const allUsers = expressAsyncHandler(async (req, res) => {
 });
 
 const updateUser = expressAsyncHandler(async (req, res) => {
-  const { pic, user } = req.body;
-  console.log(pic, user.email);
-  const update = async () => {
-    const result = await User.updateOne(
-      {
-        email: user.email,
-      },
-      {
-        $set: {
-          pic: pic,
+  try {
+    const { pic, name, bio, user } = req.body;
+    console.log(pic, user.email);
+    const update = async () => {
+      const result = await User.updateOne(
+        {
+          email: user.email,
         },
-      }
-    );
-    console.log(result);
-    res.status(200).send("updated Image");
-  };
-  update();
+        {
+          $set: {
+            pic: pic,
+            name: name,
+            bio: bio,
+          },
+        }
+      );
+      console.log("My user::::" + result);
+      const email = user.email;
+      const newUser = await User.findOne({ email });
+      res.send(newUser);
+      console.log("My user::::" + newUser);
+    };
+    update();
+  } catch (error) {
+    res.status(404).send("Update error");
+  }
 });
 
 module.exports = { registerUser, authUser, allUsers, updateUser };

@@ -1,6 +1,7 @@
 import CryptoJS from "crypto-js";
 const { AES } = CryptoJS;
-const createECDH = require('create-ecdh/browser')
+const createECDH = require('create-ecdh/browser');
+
 
 export const isSameSenderMargin = (messages, m, i, userId) => {
   // console.log(i === messages.length - 1);
@@ -59,18 +60,23 @@ export const getSenderFull = (loggedUser, users) => {
 export const getLastMessageContent = (chat, loggedUser) => {
   if (!chat.isGroupChat) {
     const publicKeyOfOtherUserStr = getSenderFull(loggedUser, chat.users).publicKey;
-    const pvkStr = localStorage.getItem("pvk");
-    const pvkParse = JSON.parse(pvkStr);
-    const pvk = Buffer.from(pvkParse.data);
-    const ecdh = createECDH("secp256k1");
-    ecdh.setPrivateKey(pvk);
-    const publicKeyOfOtherUserParsed = JSON.parse(publicKeyOfOtherUserStr);
-    const publicKeyOfOtherUser = Buffer.from(publicKeyOfOtherUserParsed.data);
-    const passphraseOfOtherUser = ecdh.computeSecret(publicKeyOfOtherUser).toString("hex");
+    const passphraseOfOtherUser = getPassphraseOfOtherUser(publicKeyOfOtherUserStr);
     return AES.decrypt(chat.latestMessage.content, passphraseOfOtherUser).toString(
       CryptoJS.enc.Utf8
     );
   } else {
     return chat.latestMessage.content;
   }
+}
+
+export const getPassphraseOfOtherUser = (publicKeyOfOtherUserStr) => {
+  const pvkStr = localStorage.getItem("pvk");
+  const pvkParse = JSON.parse(pvkStr);
+  const pvk = Buffer.from(pvkParse.data);
+  const ecdh = createECDH("secp256k1");
+  ecdh.setPrivateKey(pvk);
+  const publicKeyOfOtherUserParsed = JSON.parse(publicKeyOfOtherUserStr);
+  const publicKeyOfOtherUser = Buffer.from(publicKeyOfOtherUserParsed.data);
+  const passphraseOfOtherUser = ecdh.computeSecret(publicKeyOfOtherUser).toString("hex");
+  return passphraseOfOtherUser
 }

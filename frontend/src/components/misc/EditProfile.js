@@ -3,8 +3,9 @@ import { ViewIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-
+import { EditIcon } from "@chakra-ui/icons";
 import { useToast } from "@chakra-ui/toast";
+
 import axios from "axios";
 import {
     Modal,
@@ -16,6 +17,7 @@ import {
     ModalCloseButton,
     useDisclosure,
     IconButton,
+    Flex
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -25,13 +27,15 @@ const EditModal = ({ user, children, setLoadingPic }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
     const [pic, setPic] = useState();
+    const [isDisableName, setDisableName] = useState(true);
+    const [isDisableBio, setDisableBio] = useState(true);
     const [picLoading, setPicLoading] = useState(false);
-
     const hiddenFileRef = React.useRef(null);
     const handleUpload = event => {
         hiddenFileRef.current.click();
     }
-
+    const [newName, setNewName] = useState(user.name);
+    const [newBio, setNewBio] = useState(user.bio);
     const submitHandler = async () => {
         console.log("uploading", pic)
         try {
@@ -43,25 +47,30 @@ const EditModal = ({ user, children, setLoadingPic }) => {
             const { data } = await axios.post(
                 "/api/user/edit",
                 {
-                    user,
-                    pic,
+                    user: user,
+                    pic: pic,
+                    name: newName,
+                    bio: newBio,
                 },
                 config
             );
             setLoadingPic(pic);
             console.log(data);
             toast({
-                title: "Updated Image",
+                title: "Updated User",
                 status: "success",
                 duration: 5000,
                 isClosable: true,
                 position: "bottom",
             });
+
             var loc = localStorage.getItem('userInfo');
-            const existing = JSON.parse(loc)
-            console.log("l", existing)
-            existing.pic = pic
-            console.log(existing)
+            const existing = JSON.parse(loc);
+            console.log("l", existing);
+            existing.pic = pic;
+            existing.name = newName;
+            existing.bio = newBio;
+            console.log(existing);
             localStorage.setItem("userInfo", JSON.stringify(existing));
             setPicLoading(false);
 
@@ -143,6 +152,55 @@ const EditModal = ({ user, children, setLoadingPic }) => {
                         justifyContent="center"
                     >
                         {user.name}
+                <ModalContent h="410px">
+                    <ModalHeader>
+                        <Flex direction="column" alignItems="center">
+                            <Flex direction="row" alignItems="center">
+                                <Input
+                                    variant="filled"
+                                    size="md"
+                                    fontSize="25px"
+                                    fontWeight="500"
+                                    bg="#FFFFFF"
+                                    value={newName}
+                                    p={1.5}
+                                    textAlign="center"
+                                    mb={4}
+                                    isDisabled={isDisableName}
+                                    onChange={(e) => setNewName(e.target.value)}
+                                />
+                                <IconButton
+                                    color='gray'
+                                    variant='ghost'
+                                    icon={<EditIcon />}
+                                    ml={2}
+                                    mb={4}
+                                    onClick={() => isDisableName ? setDisableName(false) : setDisableName(true)}
+                                />
+                            </Flex>
+                            <Flex direction="row" alignItems="center">
+                                <Input
+                                    variant="filled"
+                                    size="lg"
+                                    fontSize="17px"
+                                    fontWeight="500"
+
+                                    bg="#FFFFFF"
+                                    p={1.5}
+                                    textAlign="center"
+                                    isDisabled={isDisableBio}
+                                    value={newBio}
+                                    onChange={(e) => setNewBio(e.target.value)}
+                                />
+                                <IconButton
+                                    color='gray'
+                                    variant='ghost'
+                                    icon={<EditIcon />}
+                                    ml={2}
+                                    onClick={() => isDisableBio ? setDisableBio(false) : setDisableBio(true)}
+                                />
+                            </Flex>
+                        </Flex>
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody
@@ -174,7 +232,7 @@ const EditModal = ({ user, children, setLoadingPic }) => {
                             onClick={submitHandler}
                             isLoading={picLoading}
                         >
-                            Upload
+                            Update
                         </Button>
                     </ModalBody>
                 </ModalContent>
