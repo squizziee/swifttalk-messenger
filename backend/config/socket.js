@@ -21,7 +21,9 @@ const createSocket = (server) => {
         });
         socket.on("typing", (room) => socket.in(room).emit("typing"));
         socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
-
+        socket.on("update chat", (room) => {
+            socket.in(room).emit("update chat");
+        });
         socket.on("new message", (newMessageRecieved) => {
             var chat = newMessageRecieved.chat;
 

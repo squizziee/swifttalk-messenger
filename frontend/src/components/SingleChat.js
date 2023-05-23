@@ -17,6 +17,7 @@ import UpdateGroupChatModal from "./misc/UpdateGroupChatModal";
 import { ChatState } from "../context/ChatProvider";
 import CryptoJS from "crypto-js";
 import { Button } from "@chakra-ui/button";
+
 const { AES } = CryptoJS;
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
@@ -31,7 +32,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [file, setFile] = useState();
   const toast = useToast();
   const fileInputRef = useRef(null);
-
+  const [needChatUpdate, setNeedChatUpdate] = useState(false);
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -148,6 +149,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
   }, []);
+  useEffect(() => {
+    socket.on("update chat", () => { needChatUpdate(true); console.log("lj;") });
+  }, []);
+
+  useEffect(() => {
+    console.log("dfgkhjnhdf");
+    fetchMessages();
+    socket.emit("update chat", selectedChat);
+    setNeedChatUpdate(false);
+    console.log("dfgkhjnhdf");
+  }, [needChatUpdate]);
 
   useEffect(() => {
     fetchMessages();
@@ -408,7 +420,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               />
             ) : (
               <div className="messages">
-                <ScrollableChat messages={messages} />
+                <ScrollableChat messages={messages} setNeedChatUpdate={setNeedChatUpdate} />
               </div>
             )}
 

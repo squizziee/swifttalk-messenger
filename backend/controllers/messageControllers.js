@@ -47,11 +47,15 @@ const sendMessage = expressAsyncHandler(async (req, res) => {
 
 const allMessages = expressAsyncHandler(async (req, res) => {
     try {
-        const messages = await Message.find({ chat: req.params.chatId })
+        var messages = await Message.find({ chat: req.params.chatId })
             .populate("sender", "name pic email publicKey")
             .populate("chat")
+            .populate("chat.users", "publicKey")
             .populate("attachments", "filename size url");
-
+        messages = await User.populate(messages, {
+            path: "chat.users",
+            select: "name pic email publicKey",
+        });
         res.json(messages);
     } catch (error) {
         res.status(400);
@@ -73,4 +77,42 @@ const getMessage = expressAsyncHandler(async (req, res) => {
         throw new Error(error.message);
     }
 });
-module.exports = { sendMessage, allMessages, getMessage };
+
+const deleteMessage = expressAsyncHandler(async (req, res) => {
+    console.log(req.params.messageId);
+    try {
+        await Message.findByIdAndDelete({ _id: req.params.messageId })
+        res.status(200).send("Message deleted");
+    } catch (error) {
+        res.status(400);
+        throw new Error(error.message);
+    }
+});
+
+const editMessage = expressAsyncHandler(async (req, res) => {
+
+    try {
+        const { content, _id, attachments } = req.body;
+        console.log(content);
+        const edit = async () => {
+            const result = await Message.updateOne(
+                {
+                    _id: _id,
+                },
+                {
+                    $set: {
+                        content: content,
+                        attachments: attachments,
+                    },
+                }
+            );
+            console.log(result);
+            res.status(200).send("Edit successfully");
+        }
+        edit();
+    } catch (error) {
+        res.status(400);
+        throw new Error(error.message);
+    }
+});
+module.exports = { sendMessage, allMessages, getMessage, deleteMessage, editMessage };

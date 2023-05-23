@@ -2,6 +2,7 @@ const e = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const Chat = require("../models/chatModel");
 const User = require("../models/userModel");
+const Message = require("../models/messageModel");
 
 const accessChat = expressAsyncHandler(async (req, res) => {
   const { userId } = req.body;
@@ -166,4 +167,14 @@ const removeFromGroup = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup, removeFromGroup };
+const clearHistory = expressAsyncHandler(async (req, res) => {
+  const { chatId } = req.body;
+  try {
+    await Message.findByIdAndDelete({ 'chat': chatId });
+    res.status(200).send(`History of chat: ${chatId} cleared`);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+});
+module.exports = { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup, removeFromGroup, clearHistory };
