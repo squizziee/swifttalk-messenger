@@ -219,11 +219,14 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                   <Input
                     autoFocus
                     variant="filled"
-                    bg="#BEE3F8"
+                    bg="#ffffff"
+                    focusBorderColor='#fc839f'
                     placeholder={m.content}
+                    _placeholder={{color:'black'}}
                     value={editingMessageContent}
                     onChange={(e) => setEditingMessageContent(e.target.value)}
                     flex="1"
+                    borderRadius="15px"
                   />
 
                 ) : (
@@ -252,6 +255,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                     fontWeight={500}
                     icon={<CheckIcon boxSize={4} />}
                     onClick={() => handleEditSave(m)}
+                    _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
                   >
                     Save
                   </MenuItem>
@@ -261,6 +265,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                       fontWeight={500}
                       icon={<EditIcon boxSize={4} />}
                       onClick={() => setEditingMessageId(m._id)}
+                      _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
                     >
                       Edit
                     </MenuItem>
@@ -271,6 +276,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                     fontWeight={500}
                     icon={<DownloadIcon boxSize={4} />}
                     onClick={() => handleDownloadClick(m)}
+                    _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
                   >
                     Download
                   </MenuItem>
@@ -279,6 +285,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                     fontWeight={500}
                     icon={<CopyIcon boxSize={4} />}
                     onClick={() => handleCopyClick(m)}
+                    _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
                   >
                     Copy
                   </MenuItem>
@@ -288,6 +295,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                     fontWeight={500}
                     icon={<DeleteIcon boxSize={4} />}
                     onClick={() => handleDeleteClick(m)}
+                    _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
                   >
                     Delete
                   </MenuItem>

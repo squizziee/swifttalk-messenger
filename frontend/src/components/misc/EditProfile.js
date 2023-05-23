@@ -2,7 +2,7 @@ import React from "react";
 import { ViewIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
+import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { EditIcon } from "@chakra-ui/icons";
 import { useToast } from "@chakra-ui/toast";
 
@@ -34,6 +34,7 @@ const EditModal = ({ user, children, setLoadingPic }) => {
     const handleUpload = event => {
         hiddenFileRef.current.click();
     }
+
     const [newName, setNewName] = useState(user.name);
     const [newBio, setNewBio] = useState(user.bio);
     const submitHandler = async () => {
@@ -144,61 +145,56 @@ const EditModal = ({ user, children, setLoadingPic }) => {
             )}
             <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
                 <ModalOverlay />
-                <ModalContent >
-                    <ModalHeader
-                        fontSize="4xl"
-                        fontWeight="medium"
-                        display="flex"
-                        justifyContent="center"
-                    >
-                        {user.name}
-                <ModalContent h="410px">
+                <ModalContent>
                     <ModalHeader>
-                        <Flex direction="column" alignItems="center">
-                            <Flex direction="row" alignItems="center">
-                                <Input
-                                    variant="filled"
-                                    size="md"
-                                    fontSize="25px"
-                                    fontWeight="500"
-                                    bg="#FFFFFF"
-                                    value={newName}
-                                    p={1.5}
-                                    textAlign="center"
-                                    mb={4}
-                                    isDisabled={isDisableName}
-                                    onChange={(e) => setNewName(e.target.value)}
-                                />
-                                <IconButton
-                                    color='gray'
-                                    variant='ghost'
-                                    icon={<EditIcon />}
-                                    ml={2}
-                                    mb={4}
-                                    onClick={() => isDisableName ? setDisableName(false) : setDisableName(true)}
-                                />
+                        <Flex display='flex' direction="column" alignItems="center" mb='15px'>
+                            <Flex display='flex' direction="row" justifyContent="center">
+                                <InputGroup width="70%">
+                                    <Input id="name"
+                                        spellCheck='false'
+                                        variant="unstyled"
+                                        fontSize="3xl"
+                                        fontWeight="500"
+                                        value={newName}
+                                        textAlign="center"
+                                        isDisabled={isDisableName}
+                                        onChange={(e) => setNewName(e.target.value)}
+                                    />
+                                    <InputRightElement>
+                                        <IconButton
+                                            mb={-0.5}
+                                            size='sm'
+                                            color={isDisableName ? 'gray' : 'black'}
+                                            variant='ghost'
+                                            icon={<EditIcon />}
+                                            onClick={() => isDisableName ? setDisableName(false) : setDisableName(true)}
+                                        />
+                                    </InputRightElement>
+                                </InputGroup>
                             </Flex>
-                            <Flex direction="row" alignItems="center">
-                                <Input
-                                    variant="filled"
-                                    size="lg"
-                                    fontSize="17px"
-                                    fontWeight="500"
-
-                                    bg="#FFFFFF"
-                                    p={1.5}
-                                    textAlign="center"
-                                    isDisabled={isDisableBio}
-                                    value={newBio}
-                                    onChange={(e) => setNewBio(e.target.value)}
-                                />
-                                <IconButton
-                                    color='gray'
-                                    variant='ghost'
-                                    icon={<EditIcon />}
-                                    ml={2}
-                                    onClick={() => isDisableBio ? setDisableBio(false) : setDisableBio(true)}
-                                />
+                            <Flex display='flex' direction="row" justifyContent="center" width="100%" mt="5px">
+                                <InputGroup>
+                                    <Input
+                                        spellCheck='false'
+                                        variant="unstyled"
+                                        fontSize="xl"
+                                        fontWeight="400"
+                                        textAlign="center"
+                                        isDisabled={isDisableBio}
+                                        value={newBio}
+                                        onChange={(e) => setNewBio(e.target.value)}
+                                    />
+                                    <InputRightElement>
+                                        <IconButton
+                                            mb={2.5}
+                                            color={isDisableBio ? 'gray' : 'black'}
+                                            variant='ghost'
+                                            size='sm'
+                                            icon={<EditIcon />}
+                                            onClick={() => isDisableBio ? setDisableBio(false) : setDisableBio(true)}
+                                        />
+                                    </InputRightElement>
+                                </InputGroup>
                             </Flex>
                         </Flex>
                     </ModalHeader>
@@ -208,9 +204,9 @@ const EditModal = ({ user, children, setLoadingPic }) => {
                         flexDir="column"
                     >
                         <FormLabel display="flex"
-                                   justifyContent="center"
-                                   fontSize="xl"
-                                   fontWeight="normal"
+                            justifyContent="center"
+                            fontSize="xl"
+                            fontWeight="normal"
                         >Upload your Picture</FormLabel>
                         <FormControl id="pic">
                             <Button size="md" onClick={handleUpload} width="100%" marginTop="10px">
@@ -221,7 +217,7 @@ const EditModal = ({ user, children, setLoadingPic }) => {
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => postDetails(e.target.files[0])}
-                                style={{display: 'none'}}
+                                style={{ display: 'none' }}
                             />
                         </FormControl>
                         <Button

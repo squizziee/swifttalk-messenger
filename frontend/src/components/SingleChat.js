@@ -1,5 +1,5 @@
 import { FormControl } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import "./styles.css";
 import React from "react";
@@ -444,6 +444,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
+              <InputGroup>
+              <InputLeftElement>
+                <i class="far fa-comment" style={{color:'gray'}}></i>
+              </InputLeftElement>
               <Input
                 variant="filled"
                 bg="#eef2f7"
@@ -454,6 +458,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 flex="1"
                 marginRight={2}
               />
+              </InputGroup>
               <Flex alignItems="center">
                 <Box as="label" htmlFor="file-input">
                   <VisuallyHidden>
@@ -464,13 +469,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                       onChange={handleFileUpload}
                     />
                   </VisuallyHidden>
-                  <Button
-                    colorScheme="blue"
+                  <IconButton
                     width="100%"
                     onClick={handleChooseFile}
-                  >
-                    Choose File
-                  </Button>
+                    icon={<i class="far fa-file" style={{color:'gray'}}></i>}
+                  />
                 </Box>
               </Flex>
             </FormControl>

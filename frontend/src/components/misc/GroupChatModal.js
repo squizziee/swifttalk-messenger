@@ -143,15 +143,18 @@ const GroupChatModal = ({ children }) => {
                     <ModalBody d="flex" flexDir="column" alignItems="center">
                         <FormControl>
                             <Input
+                                focusBorderColor='#fc839f'
                                 placeholder="Chat Name"
                                 mb={3}
                                 onChange={(e) => setGroupChatName(e.target.value)}
                             />
                         </FormControl>
-                        <FormControl mb={3}>
+                        <FormControl>
                             <Input
+                                focusBorderColor='#fc839f'
                                 placeholder="Add Users eg: John, Piyush, Jane"
                                 onChange={(e) => handleSearch(e.target.value)}
+                                mb="15px"
                             />
                         </FormControl>
                         <Box w="100%" d="flex" flexWrap="wrap">

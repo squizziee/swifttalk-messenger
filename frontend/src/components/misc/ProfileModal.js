@@ -35,11 +35,7 @@ const ProfileModal = ({ user, children, loadingPic, setLoadingPic }) => {
         <ModalContent>
           <ModalHeader
             fontSize="4xl"
-            display="flex"
-            justifyContent="center"
             fontWeight="medium"
-            fontSize="40px"
-            fontFamily="Work sans"
           >
             <h1 style={{ display: 'flex', justifyContent: 'center' }}>{user.name}</h1>
             <h2 style={{ fontSize: "20px", fontWeight: "400", display: 'flex', justifyContent: 'center' }}>{user.bio}</h2>
@@ -58,10 +54,11 @@ const ProfileModal = ({ user, children, loadingPic, setLoadingPic }) => {
               boxSize="150px"
               src={loadingPic ? loadingPic : user.pic}
               alt={user.name}
+              mb='20px'
             />
             <Text
               fontSize={{ base: "2xl", md: "xl" }}
-              m="15px 0px 30px 0px"
+              mb='30px'
             >
               <b>Email:</b> {user.email}
             </Text>
