@@ -242,6 +242,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
                 mb={3}
                 value={groupChatName}
                 onChange={(e) => setGroupChatName(e.target.value)}
+                focusBorderColor='#fc839f'
               />
               <Button
                 variant="solid"
@@ -256,8 +257,9 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
             <FormControl>
               <Input
                 placeholder="Add User to group"
-                mb={2}
+                mb="15px"
                 onChange={(e) => handleSearch(e.target.value)}
+                focusBorderColor='#fc839f'
               />
             </FormControl>
 

@@ -1,5 +1,5 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box, Stack, Text } from "@chakra-ui/layout";
+import { Box, Stack, Text, StackDivider} from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -54,11 +54,10 @@ const MyChats = ({ fetchAgain }) => {
       w={{ base: "100%", md: "32%" }}
       mr={3}
       borderRadius="lg"
-      borderWidth="1px"
+      boxShadow="base"
     >
       <Box
         pb={3}
-        px={3}
         fontSize={{ base: "28px", md: "30px" }}
         display="flex"
         w="100%"
@@ -66,10 +65,9 @@ const MyChats = ({ fetchAgain }) => {
         alignItems="center"
         fontWeight="medium"
       >
-        My Chats
+            My Chats
         <GroupChatModal>
           <Button
-            display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
             rightIcon={<AddIcon />}
           >
@@ -80,7 +78,6 @@ const MyChats = ({ fetchAgain }) => {
       <Box
         display="flex"
         flexDir="column"
-        p={3}
         bg="#F6F8FB"
         w="100%"
         h="100%"
@@ -88,17 +85,17 @@ const MyChats = ({ fetchAgain }) => {
         overflowY="hidden"
       >
         {chats ? (
-          <Stack overflowY="scroll">
+          <Stack overflowY="scroll" spacing={0} divider={<StackDivider borderColor='gray.200' />}>
             {chats.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
                 bg={selectedChat === chat ? "#fc839f" : "#eef2f7"}
                 color={selectedChat === chat ? "white" : "black"}
+                boxShadow={selectedChat === chat ? "inner" : "sm"}
+                _hover={selectedChat === chat ? {bg:"#F35E80", transition: '0.3s'} : { bg:"#E9ECF1", transition: '0.3s'} }
                 px={3}
                 py={2}
-                borderRadius="lg"
-                borderWidth="1px"
                 key={chat._id}
               >
                 <Text fontWeight="bold">
@@ -106,14 +103,14 @@ const MyChats = ({ fetchAgain }) => {
                     ? getSender(loggedUser, chat.users)
                     : chat.chatName}
                 </Text>
-                {chat.latestMessage && (
+                {chat.latestMessage ? (
                   <Text fontSize="xs" fontWeight="medium">
                     <b>{chat.latestMessage.sender.name} : </b>
                     {getLastMessageContent(chat, loggedUser).length > 50
-                      ? getLastMessageContent(chat, loggedUser).substring(0, 51) + "..."
-                      : getLastMessageContent(chat, loggedUser)}
+                        ? getLastMessageContent(chat, loggedUser).substring(0, 51) + "..."
+                        : getLastMessageContent(chat, loggedUser)}
                   </Text>
-                )}
+                ) : (<Text fontSize="xs" fontWeight="medium">No messages in this chat</Text>)}
               </Box>
             ))}
           </Stack>

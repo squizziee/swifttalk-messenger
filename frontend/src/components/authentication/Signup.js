@@ -158,6 +158,7 @@ const Signup = () => {
         <Input
           placeholder="Enter Your Name"
           onChange={(e) => setName(e.target.value)}
+          focusBorderColor='#fc839f'
         />
       </FormControl>
       <FormControl id="email" isRequired>
@@ -166,6 +167,7 @@ const Signup = () => {
           type="email"
           placeholder="Enter Your Email Address"
           onChange={(e) => setEmail(e.target.value)}
+          focusBorderColor='#fc839f'
         />
       </FormControl>
       <FormControl id="password" isRequired>
@@ -175,6 +177,7 @@ const Signup = () => {
             type={show ? "text" : "password"}
             placeholder="Enter Password"
             onChange={(e) => setPassword(e.target.value)}
+            focusBorderColor='#fc839f'
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
@@ -190,6 +193,7 @@ const Signup = () => {
             type={show ? "text" : "password"}
             placeholder="Confirm password"
             onChange={(e) => setConfirmpassword(e.target.value)}
+            focusBorderColor='#fc839f'
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>

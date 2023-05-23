@@ -208,7 +208,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           <Text
             fontSize={{ base: "28px", md: "30px" }}
             pb={3}
-            px={1}
             w="100%"
             fontWeight="medium"
             display="flex"
@@ -288,6 +287,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}
+                focusBorderColor='#fc839f'
               />
             </FormControl>
           </Box>

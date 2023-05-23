@@ -13,6 +13,8 @@ const UserListItem = (props) => {
       _hover={{
         background: "#fc839f",
         color: "white",
+        transition: '0.3s',
+        boxShadow: "inner"
       }}
       w="100%"
       d="flex"
@@ -27,7 +29,6 @@ const UserListItem = (props) => {
         mr={2}
         mb={1}
         size="sm"
-        cursor="pointer"
         name={user.name}
         src={user.pic}
       />

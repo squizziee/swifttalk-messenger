@@ -22,6 +22,10 @@ const Homepage = () => {
     if (!userInfo) history.push("/");
   }, [history]);
   return (
+    <Box
+    w='100vw'
+    h='100vh'
+    bg="#eef2f7"    >
     <Container 
       maxW="xl" 
       centerContent
@@ -39,13 +43,13 @@ const Homepage = () => {
         w="100%"
         m="15px 0 15px 0"
         borderRadius="lg"
-        borderWidth="1px"
+        boxShadow="base"
       >
         <Text textAlign='center' fontSize = "4xl" fontWeight='800'>
           SwiftTalk
         </Text>
       </Box>
-      <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
+      <Box bg="white" w="100%" p={4} borderRadius="lg" boxShadow="base">
         <Tabs isFitted variant="enclosed" colorScheme="swift">
           <TabList mb="1em">
             <Tab width="50%">Login</Tab>
@@ -62,6 +66,7 @@ const Homepage = () => {
         </Tabs>
       </Box>
     </Container>
+    </Box>
   );
 };
 
