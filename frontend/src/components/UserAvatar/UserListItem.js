@@ -9,10 +9,12 @@ const UserListItem = (props) => {
     <Box
       onClick={handleFunction}
       cursor="pointer"
-      bg="#E8E8E8"
+      bg="#eef2f7"
       _hover={{
-        background: "#38B2AC",
+        background: "#fc839f",
         color: "white",
+        transition: '0.3s',
+        boxShadow: "inner"
       }}
       w="100%"
       d="flex"
@@ -20,13 +22,13 @@ const UserListItem = (props) => {
       color="black"
       px={3}
       py={2}
-      mb={2}
+      mb={1}
       borderRadius="lg"
     >
       <Avatar
         mr={2}
+        mb={1}
         size="sm"
-        cursor="pointer"
         name={user.name}
         src={user.pic}
       />

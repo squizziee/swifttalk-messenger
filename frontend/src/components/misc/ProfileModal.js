@@ -12,6 +12,7 @@ import {
   Text,
   Image,
 } from "@chakra-ui/react";
+import { ViewIcon } from "@chakra-ui/icons";
 
 const ProfileModal = ({ user, children, loadingPic, setLoadingPic }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -21,16 +22,22 @@ const ProfileModal = ({ user, children, loadingPic, setLoadingPic }) => {
       {children ? (
         <span onClick={onOpen}>{children}</span>
       ) : (
-        <IconButton
+        <Button
           display={{ base: "flex" }}
-          icon={<i className="fas fa-eye"></i>}
+          // icon={<i className="fas fa-eye"></i>}
           onClick={onOpen}
-        />
+        >
+          <ViewIcon/>
+        </Button>
       )}
       <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
-        <ModalContent h="410px">
+        <ModalContent>
           <ModalHeader
+            fontSize="4xl"
+            display="flex"
+            justifyContent="center"
+            fontWeight="medium"
             fontSize="40px"
             fontFamily="Work sans"
           >
@@ -45,21 +52,20 @@ const ProfileModal = ({ user, children, loadingPic, setLoadingPic }) => {
             justifyContent="space-between"
           >
             <Image
+              display="flex"
+              justifyContent="center"
               borderRadius="full"
               boxSize="150px"
               src={loadingPic ? loadingPic : user.pic}
               alt={user.name}
             />
             <Text
-              fontSize={{ base: "28px", md: "30px" }}
-              fontFamily="Work sans"
+              fontSize={{ base: "2xl", md: "xl" }}
+              m="15px 0px 30px 0px"
             >
-              Email: {user.email}
+              <b>Email:</b> {user.email}
             </Text>
           </ModalBody>
-          <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

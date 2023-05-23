@@ -1,3 +1,4 @@
+import React from "react";
 import { ViewIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
@@ -29,6 +30,10 @@ const EditModal = ({ user, children, setLoadingPic }) => {
     const [isDisableName, setDisableName] = useState(true);
     const [isDisableBio, setDisableBio] = useState(true);
     const [picLoading, setPicLoading] = useState(false);
+    const hiddenFileRef = React.useRef(null);
+    const handleUpload = event => {
+        hiddenFileRef.current.click();
+    }
     const [newName, setNewName] = useState(user.name);
     const [newBio, setNewBio] = useState(user.bio);
     const submitHandler = async () => {
@@ -139,6 +144,14 @@ const EditModal = ({ user, children, setLoadingPic }) => {
             )}
             <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
                 <ModalOverlay />
+                <ModalContent >
+                    <ModalHeader
+                        fontSize="4xl"
+                        fontWeight="medium"
+                        display="flex"
+                        justifyContent="center"
+                    >
+                        {user.name}
                 <ModalContent h="410px">
                     <ModalHeader>
                         <Flex direction="column" alignItems="center">
@@ -193,31 +206,35 @@ const EditModal = ({ user, children, setLoadingPic }) => {
                     <ModalBody
                         display="flex"
                         flexDir="column"
-                        alignItems="center"
-                        justifyContent="space-between"
                     >
+                        <FormLabel display="flex"
+                                   justifyContent="center"
+                                   fontSize="xl"
+                                   fontWeight="normal"
+                        >Upload your Picture</FormLabel>
                         <FormControl id="pic">
-                            <FormLabel>Upload your Picture</FormLabel>
+                            <Button size="md" onClick={handleUpload} width="100%" marginTop="10px">
+                                Choose a photo
+                            </Button>
                             <Input
+                                ref={hiddenFileRef}
                                 type="file"
-                                p={1.5}
                                 accept="image/*"
                                 onChange={(e) => postDetails(e.target.files[0])}
+                                style={{display: 'none'}}
                             />
                         </FormControl>
                         <Button
-                            colorScheme="blue"
+                            colorScheme="swift"
                             width="100%"
-                            style={{ marginTop: 15 }}
+                            marginTop="15px"
+                            marginBottom="25"
                             onClick={submitHandler}
                             isLoading={picLoading}
                         >
                             Update
                         </Button>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button onClick={onClose}>Close</Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>

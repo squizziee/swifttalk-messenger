@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Box, Text } from "@chakra-ui/layout";
-import { Button, Input, Spinner } from "@chakra-ui/react";
+import { Button, Input, Spinner, IconButton } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
@@ -117,13 +117,14 @@ const SideDrawer = () => {
   return (
     <>
       <Box
+        m="10px 10px 0px 10px"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         bg="white"
-        w="100%"
         p="5px 10px 5px 10px"
-        borderWidth="5px"
+        boxShadow="base"
+        borderRadius="lg"
       >
         <Button variant="ghost" onClick={onOpen}>
           <i className="fas fa-search"></i>
@@ -131,17 +132,18 @@ const SideDrawer = () => {
             Search
           </Text>
         </Button>
-        <Text fontSize="2xl" fontFamily="Work sans">
+        <Text fontSize="2xl" fontWeight="bold">
           SwiftTalk Alpha
         </Text>
         <div>
           <Menu>
-            <MenuButton p={1}>
+            <MenuButton p={2}>
+              <IconButton icon={<i className="fas fa-bell"></i>}>
               <NotificationBadge
                 count={notification.length}
                 effect={Effect.SCALE}
               />
-              <i className="fas fa-bell"></i>
+              </IconButton>
             </MenuButton>
             <MenuList pl={2}>
               {!notification.length && "No New Messages"}
@@ -163,10 +165,9 @@ const SideDrawer = () => {
           <Menu>
             <MenuButton
               as={Button}
-              rightIcon={<i className="fas fa-search"></i>}
             >
               <Avatar
-                size="sm"
+                size="xs"
                 cursor="pointer"
                 name={user.name}
                 src={loadingPic ? loadingPic : setLoadingPic(user.pic)}
@@ -183,7 +184,7 @@ const SideDrawer = () => {
               <EditModal user={user} setLoadingPic={setLoadingPic}>
                 <MenuItem>Edit Profile</MenuItem>
               </EditModal>
-              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+              <MenuItem onClick={logoutHandler} color="red">Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>
@@ -193,12 +194,13 @@ const SideDrawer = () => {
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
           <DrawerBody>
-            <Box display="flex" pb={2}>
+            <Box display="flex" pb={2} my='15px'>
               <Input
                 placeholder="Search by name or email"
                 mr={2}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                focusBorderColor='#fc839f'
               />
               <Button onClick={handleSearch}>Go</Button>
             </Box>

@@ -15,6 +15,7 @@ import {
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
+import { ViewIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useState } from "react";
 import { ChatState } from "../../context/ChatProvider";
@@ -204,24 +205,25 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
   return (
     <>
-      <IconButton
+      <Button
         d={{ base: "flex" }}
-        icon={<i class="fa-solid fa-eye"></i>}
+        //icon={<i class="fa-solid fa-eye"></i>}
         onClick={onOpen}
-      />
+      >
+        <ViewIcon/>
+      </Button>
 
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
-            fontSize="35px"
-            fontFamily="Work sans"
+            fontSize="3xl"
+            fontWeight="normal"
             d="flex"
             justifyContent="center"
           >
             {selectedChat.chatName}
           </ModalHeader>
-
           <ModalCloseButton />
           <ModalBody d="flex" flexDir="column" alignItems="center">
             <Box w="100%" d="flex" flexWrap="wrap" pb={3}>
@@ -240,10 +242,11 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
                 mb={3}
                 value={groupChatName}
                 onChange={(e) => setGroupChatName(e.target.value)}
+                focusBorderColor='#fc839f'
               />
               <Button
                 variant="solid"
-                colorScheme="teal"
+                colorScheme="swift"
                 ml={1}
                 isLoading={renameloading}
                 onClick={handleRename}
@@ -254,8 +257,9 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
             <FormControl>
               <Input
                 placeholder="Add User to group"
-                mb={1}
+                mb="15px"
                 onChange={(e) => handleSearch(e.target.value)}
+                focusBorderColor='#fc839f'
               />
             </FormControl>
 

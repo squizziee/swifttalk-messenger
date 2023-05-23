@@ -19,6 +19,7 @@ import CryptoJS from "crypto-js";
 import { Button } from "@chakra-ui/button";
 
 const { AES } = CryptoJS;
+const createECDH = require('create-ecdh/browser')
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 
@@ -368,9 +369,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           <Text
             fontSize={{ base: "28px", md: "30px" }}
             pb={3}
-            px={2}
             w="100%"
-            fontFamily="Work sans"
+            fontWeight="medium"
             display="flex"
             justifyContent={{ base: "space-between" }}
             alignItems="center"
@@ -404,7 +404,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             flexDir="column"
             justifyContent="flex-end"
             p={3}
-            bg="#E8E8E8"
+            bg="#F6F8FB"
             w="100%"
             h="100%"
             borderRadius="lg"
@@ -446,10 +446,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               )}
               <Input
                 variant="filled"
-                bg="#E0E0E0"
+                bg="#eef2f7"
                 placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}
+                focusBorderColor='#fc839f'
                 flex="1"
                 marginRight={2}
               />
@@ -482,7 +483,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           justifyContent="center"
           h="100%"
         >
-          <Text fontSize="3xl" pb={3} fontFamily="Work sans">
+          <Text fontSize="3xl" pb={3}>
             Click on a user to start chatting
           </Text>
         </Box>
