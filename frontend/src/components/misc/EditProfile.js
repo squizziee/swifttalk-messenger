@@ -134,8 +134,6 @@ const EditModal = ({ user, children, setLoadingPic }) => {
             return;
         }
     };
-
-
     return (
         <>
             {children ? (
@@ -221,14 +219,14 @@ const EditModal = ({ user, children, setLoadingPic }) => {
                             />
                         </FormControl>
                         <Button
-  backgroundColor={colorMode === "dark" ? "#5cb583" : "#fc839f"}
-  color="white"
-  width="100%"
-  marginTop="15px"
-  marginBottom="25px"
-  onClick={submitHandler}
-  isLoading={picLoading}
->
+                            backgroundColor={colorMode === "dark" ? "#5cb583" : "#fc839f"}
+                            color="white"
+                            width="100%"
+                            marginTop="15px"
+                            marginBottom="25px"
+                            onClick={submitHandler}
+                            isLoading={picLoading}
+                         >
                             Update
                         </Button>
                     </ModalBody>
