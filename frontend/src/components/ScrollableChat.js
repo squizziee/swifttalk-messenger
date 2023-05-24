@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Tooltip } from "@chakra-ui/tooltip";
 import ScrollableFeed from "react-scrollable-feed";
 import CryptoJS from "crypto-js";
+import { useColorMode } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, AtSignIcon, CopyIcon, DownloadIcon, CheckIcon } from "@chakra-ui/icons";
 import {
   getPassphraseOfOtherUser,
@@ -36,8 +37,11 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
   const [editingMessageContent, setEditingMessageContent] = useState("");
   const { user } = ChatState();
   const toast = useToast();
+  const { colorMode } = useColorMode();
 
-
+  const focusBorderColor =
+    colorMode === "dark" ? "#5cb583" : "#fc839f";
+ 
   async function handleEditSave(m) {
     console.log('Edit button clicked');
     console.log(`Message Id: ${m._id}`);
@@ -196,6 +200,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                   cursor="pointer"
                   name={m.sender.name}
                   src={m.sender.pic}
+                  
                 />
               </Tooltip>
             )}
@@ -205,14 +210,22 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
               <MenuButton
                 onContextMenu={handleRightClick}
                 style={{
-                  backgroundColor: `${m.sender._id === user._id ? "#F35E80" : "#F8D4DF"
-                    }`,
-                   marginLeft: isSameSenderMargin(messages, m, i, user._id),
+                  backgroundColor: `${
+                    m.sender._id === user._id
+                      ? colorMode === "dark"
+                        ? "#5cb583"
+                        : "#F35E80"
+                      : colorMode === "dark"
+                      ? "#5cb583"
+                      : "#F8D4DF"
+                  }`,
+                    marginLeft: isSameSenderMargin(messages, m, i, user._id),
                     marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
                     borderRadius: "20px",
-                    padding: "5px 15px",
+                    padding: /*"5px 15px",*/ `${ m.attachments ? (m.attachments.filename === "png" ||
+                    m.attachments.filename === "jpg" ? "5px 5px" : "5px 15px") : "5px 15px"}`,
                     maxWidth: "75%",
-                    color: `${ m.sender._id === user._id ? "white" : "black" }`,
+                    color: `${m.sender._id === user._id ? "white" : "black" }`,
                 }}
               >
                 {editingMessageId === m._id ? (
@@ -220,7 +233,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                     autoFocus
                     variant="filled"
                     bg="#ffffff"
-                    focusBorderColor='#fc839f'
+                    focusBorderColor={focusBorderColor}
                     placeholder={m.content}
                     _placeholder={{color:'black'}}
                     value={editingMessageContent}
@@ -236,7 +249,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                       <img
                         src={m.attachments.url}
                         alt="Picture"
-                        style={{ maxWidth: "100%" }}
+                        style={{ maxWidth: "100%", maxHeight:'100%',borderRadius:"16px"}}
                       />
                     ) : (
                       <a href={m.attachments.url} download>
@@ -248,9 +261,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                   )
                 )}
               </MenuButton>
-              <MenuList>
-
-                {editingMessageId === m._id && m.sender._id === user._id ? (
+              <MenuList>{editingMessageId === m._id && m.sender._id === user._id ? (
                   <MenuItem
                     fontWeight={500}
                     icon={<CheckIcon boxSize={4} />}
@@ -301,9 +312,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                   </MenuItem>
                 ) : (
                   null
-                )}
-
-              </MenuList>
+                )}</MenuList>
             </Menu>
           </div>
         ))}

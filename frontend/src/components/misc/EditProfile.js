@@ -5,7 +5,7 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { EditIcon } from "@chakra-ui/icons";
 import { useToast } from "@chakra-ui/toast";
-
+import { useColorMode } from "@chakra-ui/react";
 import axios from "axios";
 import {
     Modal,
@@ -34,7 +34,7 @@ const EditModal = ({ user, children, setLoadingPic }) => {
     const handleUpload = event => {
         hiddenFileRef.current.click();
     }
-
+    const { colorMode } = useColorMode();
     const [newName, setNewName] = useState(user.name);
     const [newBio, setNewBio] = useState(user.bio);
     const submitHandler = async () => {
@@ -221,13 +221,14 @@ const EditModal = ({ user, children, setLoadingPic }) => {
                             />
                         </FormControl>
                         <Button
-                            colorScheme="swift"
-                            width="100%"
-                            marginTop="15px"
-                            marginBottom="25"
-                            onClick={submitHandler}
-                            isLoading={picLoading}
-                        >
+  backgroundColor={colorMode === "dark" ? "#5cb583" : "#fc839f"}
+  color="white"
+  width="100%"
+  marginTop="15px"
+  marginBottom="25px"
+  onClick={submitHandler}
+  isLoading={picLoading}
+>
                             Update
                         </Button>
                     </ModalBody>

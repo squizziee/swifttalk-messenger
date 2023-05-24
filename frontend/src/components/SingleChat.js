@@ -17,6 +17,7 @@ import UpdateGroupChatModal from "./misc/UpdateGroupChatModal";
 import { ChatState } from "../context/ChatProvider";
 import CryptoJS from "crypto-js";
 import { Button } from "@chakra-ui/button";
+import { useColorMode } from "@chakra-ui/react";
 
 const { AES } = CryptoJS;
 const createECDH = require('create-ecdh/browser')
@@ -44,7 +45,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
   const { selectedChat, setSelectedChat, user, notification, setNotification } =
     ChatState();
+    const { colorMode } = useColorMode();
 
+    const focusBorderColor =
+      colorMode === "dark" ? "#5cb583" : "#fc839f";
   const fetchMessages = async () => {
     if (!selectedChat) return;
 
@@ -361,7 +365,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const handleChooseFile = () => {
     fileInputRef.current.click();
   };
-
   return (
     <>
       {selectedChat ? (
@@ -404,7 +407,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             flexDir="column"
             justifyContent="flex-end"
             p={3}
-            bg="#F6F8FB"
+            bg={colorMode === "dark" ? "gray.700" : "white"}
             w="100%"
             h="100%"
             borderRadius="lg"
@@ -450,11 +453,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               </InputLeftElement>
               <Input
                 variant="filled"
-                bg="#eef2f7"
+                bg={colorMode === "dark" ? "gray.700" : "white"}
                 placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}
-                focusBorderColor='#fc839f'
+                focusBorderColor={focusBorderColor}
                 flex="1"
                 marginRight={2}
               />

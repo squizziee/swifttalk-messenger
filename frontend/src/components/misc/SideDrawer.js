@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Box, Text } from "@chakra-ui/layout";
-import { Button, Input, Spinner, IconButton } from "@chakra-ui/react";
+import { Button, Input, Spinner, IconButton, useColorMode } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
@@ -30,7 +30,11 @@ const SideDrawer = () => {
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
   const [loadingPic, setLoadingPic] = useState(false);
+  
+  const { colorMode, toggleColorMode } = useColorMode();
 
+  const focusBorderColor =
+    colorMode === "dark" ? "#5cb583" : "#fc839f";
   const {
     setSelectedChat,
     user,
@@ -121,7 +125,7 @@ const SideDrawer = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        bg="white"
+        bg={colorMode === "dark" ? "gray.700" : "white"}
         p="5px 10px 5px 10px"
         boxShadow="base"
         borderRadius="lg"
@@ -187,6 +191,7 @@ const SideDrawer = () => {
               <MenuItem onClick={logoutHandler} color="red">Logout</MenuItem>
             </MenuList>
           </Menu>
+          
         </div>
       </Box>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
@@ -200,7 +205,7 @@ const SideDrawer = () => {
                 mr={2}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                focusBorderColor='#fc839f'
+                focusBorderColor={focusBorderColor}
               />
               <Button onClick={handleSearch}>Go</Button>
             </Box>

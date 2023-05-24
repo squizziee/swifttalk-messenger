@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
-import { VStack } from "@chakra-ui/layout";
+import { VStack, useColorMode } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import axios from "axios";
@@ -14,13 +14,13 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState("");
 
   const history = useHistory();
-
+  const { colorMode } = useColorMode();
   const submitHandler = async () => {
     setLoading(true);
     if (!email || !password) {
@@ -93,7 +93,11 @@ const Login = () => {
           type="email"
           placeholder="Enter Your Email Address"
           onChange={(e) => setEmail(e.target.value)}
-          focusBorderColor='#fc839f'
+          focusBorderColor="#fc839f"
+          color={colorMode === "dark" ? "white" : "black"}
+          _placeholder={{
+            color: colorMode === "dark" ? "gray.400" : "gray.600",
+          }}
         />
       </FormControl>
       <FormControl id="password" isRequired>
@@ -104,24 +108,28 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             type={show ? "text" : "password"}
             placeholder="Enter password"
-            focusBorderColor='#fc839f'
+            focusBorderColor="#fc839f"
+            _placeholder={{
+              color: colorMode === "dark" ? "gray.400" : "gray.600",
+            }}
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
-            {show ? <ViewOffIcon/> : <ViewIcon/>}
+              {show ? <ViewOffIcon /> : <ViewIcon />}
             </Button>
           </InputRightElement>
         </InputGroup>
       </FormControl>
       <Button
-        colorScheme="swift"
-        width="100%"
-        style={{ marginTop: 15 }}
-        onClick={submitHandler}
-        isLoading={loading}
-      >
-        Login
-      </Button>
+  bg="#fc839f"
+  color="white"
+  width="100%"
+  style={{ marginTop: 15 }}
+  onClick={submitHandler}
+  isLoading={loading}
+>
+  Login
+</Button>
     </VStack>
   );
 };

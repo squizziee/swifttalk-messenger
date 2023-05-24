@@ -1,5 +1,10 @@
-import React from "react";
-import { Button } from "@chakra-ui/button";
+import React, { useRef } from "react";
+import {
+  Button,
+  extendTheme,
+  useColorMode,
+  withTheme,
+} from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
@@ -23,12 +28,12 @@ const Signup = () => {
   const toast = useToast();
   const history = useHistory();
 
-  const hiddenFileRef = React.useRef(null);
+  const hiddenFileRef = useRef(null);
 
   const handleClick = () => setShow(!show);
-  const handleUpdate = event => {
+  const handleUpdate = (event) => {
     hiddenFileRef.current.click();
-  }
+  };
 
   const postDetails = (pic) => {
     setPicLoading(true);
@@ -73,6 +78,7 @@ const Signup = () => {
       return;
     }
   };
+
   const submitHandler = async () => {
     setPicLoading(true);
     if (!name || !email || !password || !confirmpassword) {
@@ -103,9 +109,9 @@ const Signup = () => {
           "Content-type": "application/json",
         },
       };
-      const createECDH = require('create-ecdh/browser');
-      const ecdh = createECDH('secp256k1');
-      ecdh.generateKeys()
+      const createECDH = require("create-ecdh/browser");
+      const ecdh = createECDH("secp256k1");
+      ecdh.generateKeys();
       const publicKey = JSON.stringify(ecdh.getPublicKey());
       const privateKey = JSON.stringify(ecdh.getPrivateKey());
       const passphrase = pbkdf2
@@ -140,7 +146,7 @@ const Signup = () => {
       history.push("/");
     } catch (error) {
       toast({
-        title: "Can`t registrate the user",
+        title: "Can't register the user",
         description: error.response.data.message,
         status: "error",
         duration: 5000,
@@ -151,6 +157,8 @@ const Signup = () => {
     }
   };
 
+  const { colorMode } = useColorMode();
+
   return (
     <VStack spacing="15px">
       <FormControl id="first-name" isRequired>
@@ -158,7 +166,14 @@ const Signup = () => {
         <Input
           placeholder="Enter Your Name"
           onChange={(e) => setName(e.target.value)}
-          focusBorderColor='#fc839f'
+          focusBorderColor="#fc839f"
+          _placeholder={{
+            color: colorMode === "dark" ? "gray.400" : "gray.600",
+            _focus: {
+              color: colorMode === "dark" ? "gray.400" : "gray.600",
+              borderColor: "#fc839f",
+            },
+          }}
         />
       </FormControl>
       <FormControl id="email" isRequired>
@@ -167,7 +182,14 @@ const Signup = () => {
           type="email"
           placeholder="Enter Your Email Address"
           onChange={(e) => setEmail(e.target.value)}
-          focusBorderColor='#fc839f'
+          focusBorderColor="#fc839f"
+          _placeholder={{
+            color: colorMode === "dark" ? "gray.400" : "gray.600",
+            _focus: {
+              color: colorMode === "dark" ? "gray.400" : "gray.600",
+              borderColor: "#fc839f",
+            },
+          }}
         />
       </FormControl>
       <FormControl id="password" isRequired>
@@ -177,11 +199,18 @@ const Signup = () => {
             type={show ? "text" : "password"}
             placeholder="Enter Password"
             onChange={(e) => setPassword(e.target.value)}
-            focusBorderColor='#fc839f'
+            focusBorderColor="#fc839f"
+            _placeholder={{
+              color: colorMode === "dark" ? "gray.400" : "gray.600",
+              _focus: {
+                color: colorMode === "dark" ? "gray.400" : "gray.600",
+                borderColor: "#fc839f",
+              },
+            }}
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
-            {show ? <ViewOffIcon/> : <ViewIcon/>}
+              {show ? <ViewOffIcon /> : <ViewIcon />}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -193,16 +222,23 @@ const Signup = () => {
             type={show ? "text" : "password"}
             placeholder="Confirm password"
             onChange={(e) => setConfirmpassword(e.target.value)}
-            focusBorderColor='#fc839f'
+            focusBorderColor="#fc839f"
+            _placeholder={{
+              color: colorMode === "dark" ? "gray.400" : "gray.600",
+              _focus: {
+                color: colorMode === "dark" ? "gray.400" : "gray.600",
+                borderColor: "#fc839f",
+              },
+            }}
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
-            {show ? <ViewOffIcon/> : <ViewIcon/>}
+              {show ? <ViewOffIcon /> : <ViewIcon />}
             </Button>
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      <FormControl id="pic" >
+      <FormControl id="pic">
         <FormLabel>Upload your Picture</FormLabel>
         <Button size="md" onClick={handleUpdate}>
           Choose a photo
@@ -213,11 +249,12 @@ const Signup = () => {
           p={1.5}
           accept="image/*"
           onChange={(e) => postDetails(e.target.files[0])}
-          style={{display: 'none'}}
+          style={{ display: "none" }}
         />
       </FormControl>
       <Button
-        colorScheme="swift"
+        bg="#fc839f"
+        color="white"
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}
