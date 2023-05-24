@@ -93,7 +93,7 @@ const MyChats = ({ fetchAgain }) => {
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
-                bg={selectedChat === chat ? (colorMode === "dark" ? "#5cb583" : "#fc839f") : (colorMode === "dark" ? "#2e3643" : "#eef2f7")}
+                bg={selectedChat === chat ? (colorMode === "dark" ? "#5cb583" : "#fc839f") : (colorMode === "dark" ? "#333b48" : "#eef2f7")}
                 color={selectedChat === chat || colorMode === "dark" ? "white" : "black"}
                 boxShadow={selectedChat === chat ? "inner" : "sm"}
                 _hover={

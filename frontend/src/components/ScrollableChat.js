@@ -266,7 +266,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                     fontWeight={500}
                     icon={<CheckIcon boxSize={4} />}
                     onClick={() => handleEditSave(m)}
-                    _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
+                    _hover={{ bg: colorMode === "dark" ? "#3d4756" : "#E9ECF1", transition: '0.3s'}}
                   >
                     Save
                   </MenuItem>
@@ -276,7 +276,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                       fontWeight={500}
                       icon={<EditIcon boxSize={4} />}
                       onClick={() => setEditingMessageId(m._id)}
-                      _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
+                      _hover={{ bg: colorMode === "dark" ? "#3d4756" : "#E9ECF1", transition: '0.3s'}}
                     >
                       Edit
                     </MenuItem>
@@ -287,7 +287,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                     fontWeight={500}
                     icon={<DownloadIcon boxSize={4} />}
                     onClick={() => handleDownloadClick(m)}
-                    _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
+                    _hover={{ bg: colorMode === "dark" ? "#3d4756" : "#E9ECF1", transition: '0.3s'}}
                   >
                     Download
                   </MenuItem>
@@ -296,7 +296,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                     fontWeight={500}
                     icon={<CopyIcon boxSize={4} />}
                     onClick={() => handleCopyClick(m)}
-                    _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
+                    _hover={{ bg: colorMode === "dark" ? "#3d4756" : "#E9ECF1", transition: '0.3s'}}
                   >
                     Copy
                   </MenuItem>
@@ -306,7 +306,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                     fontWeight={500}
                     icon={<DeleteIcon boxSize={4} />}
                     onClick={() => handleDeleteClick(m)}
-                    _hover={{ bg:"#E9ECF1", transition: '0.3s'}}
+                    _hover={{ bg: colorMode === "dark" ? "#3d4756" : "#E9ECF1", transition: '0.3s'}}
                   >
                     Delete
                   </MenuItem>

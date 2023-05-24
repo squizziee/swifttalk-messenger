@@ -158,6 +158,8 @@ const Signup = () => {
   };
 
   const { colorMode } = useColorMode();
+  const focusBorderColor =
+  colorMode === "dark" ? "#5cb583" : "#fc839f";
 
   return (
     <VStack spacing="15px">
@@ -166,7 +168,7 @@ const Signup = () => {
         <Input
           placeholder="Enter Your Name"
           onChange={(e) => setName(e.target.value)}
-          focusBorderColor="#fc839f"
+          focusBorderColor={focusBorderColor}
           _placeholder={{
             color: colorMode === "dark" ? "gray.400" : "gray.600",
             _focus: {
@@ -182,7 +184,7 @@ const Signup = () => {
           type="email"
           placeholder="Enter Your Email Address"
           onChange={(e) => setEmail(e.target.value)}
-          focusBorderColor="#fc839f"
+          focusBorderColor={focusBorderColor}
           _placeholder={{
             color: colorMode === "dark" ? "gray.400" : "gray.600",
             _focus: {
@@ -199,7 +201,7 @@ const Signup = () => {
             type={show ? "text" : "password"}
             placeholder="Enter Password"
             onChange={(e) => setPassword(e.target.value)}
-            focusBorderColor="#fc839f"
+            focusBorderColor={focusBorderColor}
             _placeholder={{
               color: colorMode === "dark" ? "gray.400" : "gray.600",
               _focus: {
@@ -222,7 +224,7 @@ const Signup = () => {
             type={show ? "text" : "password"}
             placeholder="Confirm password"
             onChange={(e) => setConfirmpassword(e.target.value)}
-            focusBorderColor="#fc839f"
+            focusBorderColor={focusBorderColor}
             _placeholder={{
               color: colorMode === "dark" ? "gray.400" : "gray.600",
               _focus: {
@@ -253,9 +255,9 @@ const Signup = () => {
         />
       </FormControl>
       <Button
-        bg="#fc839f"
-        color="white"
+        color={colorMode==="dark" ? "black" : "white"}
         width="100%"
+        colorScheme={colorMode==="dark" ? "green" : "swift"}
         style={{ marginTop: 15 }}
         onClick={submitHandler}
         isLoading={picLoading}

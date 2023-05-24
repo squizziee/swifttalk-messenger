@@ -21,6 +21,8 @@ const Login = () => {
 
   const history = useHistory();
   const { colorMode } = useColorMode();
+  const focusBorderColor =
+    colorMode === "dark" ? "#5cb583" : "#fc839f";
   const submitHandler = async () => {
     setLoading(true);
     if (!email || !password) {
@@ -93,7 +95,7 @@ const Login = () => {
           type="email"
           placeholder="Enter Your Email Address"
           onChange={(e) => setEmail(e.target.value)}
-          focusBorderColor="#fc839f"
+          focusBorderColor={focusBorderColor}
           color={colorMode === "dark" ? "white" : "black"}
           _placeholder={{
             color: colorMode === "dark" ? "gray.400" : "gray.600",
@@ -108,7 +110,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             type={show ? "text" : "password"}
             placeholder="Enter password"
-            focusBorderColor="#fc839f"
+            focusBorderColor={focusBorderColor}
             _placeholder={{
               color: colorMode === "dark" ? "gray.400" : "gray.600",
             }}
@@ -126,8 +128,8 @@ const Login = () => {
         </InputGroup>
       </FormControl>
       <Button
-        bg="#fc839f"
-        color="white"
+        colorScheme={colorMode==="dark" ? "green" : "swift"}
+        color={colorMode==="dark" ? "black" : "white"}
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}

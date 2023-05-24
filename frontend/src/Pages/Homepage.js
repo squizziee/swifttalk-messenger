@@ -19,6 +19,7 @@ import Signup from "../components/authentication/Signup";
 import Login from "../components/authentication/Login";
 import { Image } from "@chakra-ui/react";
 import logo from "../coloring/logo.png";
+import darkLogo from "../coloring/logo-green.png";
 import background from "../coloring/background-light.png";
 import darkBackground from "../coloring/background-dark.png";
 
@@ -32,6 +33,7 @@ const Homepage = () => {
 
   const { colorMode, toggleColorMode } = useColorMode();
   const backgroundImage = (colorMode === "dark" ? darkBackground : background);
+  const Logo = colorMode === "dark" ? darkLogo : logo;
 
   return (
       <Box
@@ -62,7 +64,7 @@ const Homepage = () => {
             boxShadow={colorMode === "dark" ? "xl" : "base"}
           >
             <Image
-              src={logo}
+              src={Logo}
               left="50%"
               top="50%"
               transform="translate(83%, 0)"
@@ -81,7 +83,7 @@ const Homepage = () => {
             <Tabs 
                 isFitted
                 variant="enclosed"
-                colorScheme="swift"
+                colorScheme={colorMode === "dark" ?  "green":"swift"}
             >
               <TabList mb="1em">
                 <Tab
