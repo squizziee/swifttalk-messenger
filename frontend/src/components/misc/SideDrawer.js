@@ -23,6 +23,7 @@ import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
 import EditModal from "./EditProfile";
+import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -30,7 +31,7 @@ const SideDrawer = () => {
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
   const [loadingPic, setLoadingPic] = useState(false);
-  
+
   const { colorMode, toggleColorMode } = useColorMode();
 
   const focusBorderColor =
@@ -137,16 +138,29 @@ const SideDrawer = () => {
           </Text>
         </Button>
         <Text fontSize="2xl" fontWeight="bold">
-          SwiftTalk Alpha
+          SwiftTalk Beta
         </Text>
         <div>
+        <Button
+          onClick={toggleColorMode}
+          bg={colorMode === "dark" ? "white" : "#25292d"}
+          color={colorMode === "dark" ? "#25292d" : "white"}
+          _hover={{
+            bg: colorMode === "dark" ? "gray.200" : "gray.800",
+          }}
+          _active={{
+            bg: colorMode === "dark" ? "gray.300" : "gray.700",
+          }}
+        >
+          {colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+        </Button>
           <Menu>
             <MenuButton p={2}>
               <IconButton icon={<i className="fas fa-bell"></i>}>
-              <NotificationBadge
-                count={notification.length}
-                effect={Effect.SCALE}
-              />
+                <NotificationBadge
+                  count={notification.length}
+                  effect={Effect.SCALE}
+                />
               </IconButton>
             </MenuButton>
             <MenuList pl={2}>
@@ -191,7 +205,6 @@ const SideDrawer = () => {
               <MenuItem onClick={logoutHandler} color="red">Logout</MenuItem>
             </MenuList>
           </Menu>
-          
         </div>
       </Box>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>

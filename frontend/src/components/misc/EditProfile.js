@@ -17,7 +17,7 @@ import {
     ModalCloseButton,
     useDisclosure,
     IconButton,
-    Flex
+    Flex,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -34,7 +34,7 @@ const EditModal = ({ user, children, setLoadingPic }) => {
     const handleUpload = event => {
         hiddenFileRef.current.click();
     }
-    const { colorMode } = useColorMode();
+    const { colorMode} = useColorMode();
     const [newName, setNewName] = useState(user.name);
     const [newBio, setNewBio] = useState(user.bio);
     const submitHandler = async () => {
@@ -164,7 +164,7 @@ const EditModal = ({ user, children, setLoadingPic }) => {
                                         <IconButton
                                             mb={-0.5}
                                             size='sm'
-                                            color={isDisableName ? 'gray' : 'black'}
+                                            color={isDisableName ? 'gray' : (colorMode === "dark" ? 'white' : 'black')}
                                             variant='ghost'
                                             icon={<EditIcon />}
                                             onClick={() => isDisableName ? setDisableName(false) : setDisableName(true)}
@@ -187,7 +187,7 @@ const EditModal = ({ user, children, setLoadingPic }) => {
                                     <InputRightElement>
                                         <IconButton
                                             mb={2.5}
-                                            color={isDisableBio ? 'gray' : 'black'}
+                                            color={isDisableBio ? 'gray' : (colorMode === "dark" ? 'white' : 'black')}
                                             variant='ghost'
                                             size='sm'
                                             icon={<EditIcon />}

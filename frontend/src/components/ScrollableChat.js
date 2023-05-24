@@ -1,7 +1,7 @@
 import { Avatar } from "@chakra-ui/avatar";
 import axios from "axios";
 import { Input } from "@chakra-ui/input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Tooltip } from "@chakra-ui/tooltip";
 import ScrollableFeed from "react-scrollable-feed";
 import CryptoJS from "crypto-js";
@@ -216,7 +216,7 @@ const ScrollableChat = ({ messages, setNeedChatUpdate }) => {
                         ? "#5cb583"
                         : "#F35E80"
                       : colorMode === "dark"
-                      ? "#5cb583"
+                      ? "#C5f9dd"
                       : "#F8D4DF"
                   }`,
                     marginLeft: isSameSenderMargin(messages, m, i, user._id),

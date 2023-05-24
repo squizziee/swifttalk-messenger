@@ -12,7 +12,7 @@ import {
   Input,
   useToast,
   Box,
-  IconButton,
+  useColorMode,
   Spinner,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
@@ -31,6 +31,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   const [renameloading, setRenameLoading] = useState(false);
   const toast = useToast();
 
+  const { colorMode, toggleColorMode } = useColorMode();
   const { selectedChat, setSelectedChat, user } = ChatState();
 
   const handleSearch = async (query) => {
@@ -242,11 +243,11 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
                 mb={3}
                 value={groupChatName}
                 onChange={(e) => setGroupChatName(e.target.value)}
-                focusBorderColor='#fc839f'
+                focusBorderColor={colorMode === "dark" ? "#5cb583" : "#fc839f"}
               />
               <Button
                 variant="solid"
-                colorScheme="swift"
+                colorScheme={colorMode === "dark" ? "green" : "swift"}
                 ml={1}
                 isLoading={renameloading}
                 onClick={handleRename}
@@ -259,7 +260,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
                 placeholder="Add User to group"
                 mb="15px"
                 onChange={(e) => handleSearch(e.target.value)}
-                focusBorderColor='#fc839f'
+                focusBorderColor={colorMode === "dark" ? "#5cb583" : "#fc839f"}
               />
             </FormControl>
 

@@ -16,7 +16,6 @@ import io from "socket.io-client";
 import UpdateGroupChatModal from "./misc/UpdateGroupChatModal";
 import { ChatState } from "../context/ChatProvider";
 import CryptoJS from "crypto-js";
-import { Button } from "@chakra-ui/button";
 import { useColorMode } from "@chakra-ui/react";
 
 const { AES } = CryptoJS;
@@ -407,7 +406,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             flexDir="column"
             justifyContent="flex-end"
             p={3}
-            bg={colorMode === "dark" ? "gray.700" : "white"}
+            bg={colorMode === "dark" ? "gray.800" : "#F6F8FB"}
             w="100%"
             h="100%"
             borderRadius="lg"
@@ -452,8 +451,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <i class="far fa-comment" style={{color:'gray'}}></i>
               </InputLeftElement>
               <Input
-                variant="filled"
-                bg={colorMode === "dark" ? "gray.700" : "white"}
+                variant="outline"
+                bg={colorMode === "dark" ? "gray.700" : "#eef2f7"}
                 placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}
@@ -476,6 +475,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     width="100%"
                     onClick={handleChooseFile}
                     icon={<i class="far fa-file" style={{color:'gray'}}></i>}
+                    borderWidth='1px'
                   />
                 </Box>
               </Flex>

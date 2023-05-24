@@ -77,7 +77,7 @@ const MyChats = ({ fetchAgain }) => {
       <Box
         display="flex"
         flexDir="column"
-        bg={colorMode === "dark" ? "gray.700" : "#F6F8FB"}
+        bg={colorMode === "dark" ? "gray.800" : "#F6F8FB"}
         w="100%"
         h="100%"
         borderRadius="lg"
@@ -93,18 +93,18 @@ const MyChats = ({ fetchAgain }) => {
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
-                bg={selectedChat === chat ? (colorMode === "dark" ? "#5cb583" : "#fc839f") : (colorMode === "dark" ? "#eef2f7" : "#eef2f7")}
-      color={selectedChat === chat ? "white" : "black"}
-      boxShadow={selectedChat === chat ? "inner" : "sm"}
-      _hover={
-        selectedChat === chat
-          ? { bg: colorMode === "dark" ? "#5cb583" : "#F35E80", transition: "0.3s" }
-          : { bg: colorMode === "dark" ? "#eef2f7" : "#E9ECF1", transition: "0.3s" }
-      }
-      px={3}
-      py={2}
-      key={chat._id}
-    >
+                bg={selectedChat === chat ? (colorMode === "dark" ? "#5cb583" : "#fc839f") : (colorMode === "dark" ? "#2e3643" : "#eef2f7")}
+                color={selectedChat === chat || colorMode === "dark" ? "white" : "black"}
+                boxShadow={selectedChat === chat ? "inner" : "sm"}
+                _hover={
+                  selectedChat === chat
+                    ? { bg: colorMode === "dark" ? "#6bb78d" : "#F35E80", transition: "0.3s" }
+                    : { bg: colorMode === "dark" ? "#272d37" : "#E9ECF1", transition: "0.3s" }
+                }
+                px={3}
+                py={2}
+                key={chat._id}
+              >
                 <Text fontWeight="bold">
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
@@ -115,9 +115,9 @@ const MyChats = ({ fetchAgain }) => {
                     <b>{chat.latestMessage.sender.name} : </b>
                     {getLastMessageContent(chat, loggedUser).length > 50
                       ? getLastMessageContent(chat, loggedUser).substring(
-                          0,
-                          51
-                        ) + "..."
+                        0,
+                        51
+                      ) + "..."
                       : getLastMessageContent(chat, loggedUser)}
                   </Text>
                 ) : (

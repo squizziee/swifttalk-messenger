@@ -7,7 +7,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
   useColorMode,
   Button,
   ChakraProvider,
@@ -15,33 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons"; // Импорт иконок
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import Signup from "../components/authentication/Signup";
 import Login from "../components/authentication/Login";
 import { Image } from "@chakra-ui/react";
 import logo from "../coloring/logo.png";
 import background from "../coloring/background-light.png";
 import darkBackground from "../coloring/background-dark.png";
-
-const theme = extendTheme({
-  components: {
-    Button: {
-      baseStyle: {
-        _focus: {
-          boxShadow: "none",
-        },
-      },
-    },
-  },
-  styles: {
-    global: (props) => ({
-      body: {
-        bg: props.colorMode === "dark" ? "black" : "white",
-        color: props.colorMode === "dark" ? "white" : "black",
-      },
-    }),
-  },
-});
 
 const Homepage = () => {
   const history = useHistory();
@@ -52,14 +31,12 @@ const Homepage = () => {
   }, [history]);
 
   const { colorMode, toggleColorMode } = useColorMode();
-  const backgroundImage = colorMode === "dark" ? darkBackground : background;
+  const backgroundImage = (colorMode === "dark" ? darkBackground : background);
 
   return (
-    <ChakraProvider theme={theme}>
       <Box
         w="100vw"
         h="100vh"
-        bg="#eef2f7"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
@@ -70,41 +47,50 @@ const Homepage = () => {
           centerContent
           position="absolute"
           left="50%"
-          top="40%"
-          transform="translate(-50%, -40%)"
+          top="50%"
+          transform="translate(-50%, -50%)"
         >
           <Box
             d="flex"
             justifyContent="center"
             alignItems="center"
             p={3}
-            bg="white"
+            bg={colorMode === "dark" ? "gray.700" : "white"}
             w="100%"
-            m="15px 0 15px 0"
+            mb='15px'
             borderRadius="lg"
-            boxShadow="base"
+            boxShadow={colorMode === "dark" ? "xl" : "base"}
           >
             <Image
               src={logo}
               left="50%"
               top="50%"
-              transform="translate(68%, 0)"
-              boxSize="40%"
+              transform="translate(83%, 0)"
+              boxSize="35%"
               alt="logo"
+              my='5px'
             />
           </Box>
-          <Box bg="white" w="100%" p={4} borderRadius="lg" boxShadow="base">
-            <Tabs isFitted variant="enclosed" colorScheme="swift">
+          <Box 
+              bg={colorMode === "dark" ? "gray.700" : "white"}
+              w="100%"
+              p={4}
+              borderRadius="lg"
+              boxShadow={colorMode === "dark" ? "xl" : "base"}
+          >
+            <Tabs 
+                isFitted
+                variant="enclosed"
+                colorScheme="swift"
+            >
               <TabList mb="1em">
                 <Tab
                   width="50%"
-                  colorScheme={colorMode === "dark" ? "white" : "pink"}
                 >
                   Login
                 </Tab>
                 <Tab
                   width="50%"
-                  colorScheme={colorMode === "dark" ? "white" : "pink"}
                 >
                   Sign up
                 </Tab>
@@ -125,8 +111,9 @@ const Homepage = () => {
           position="fixed"
           top="1rem"
           right="1rem"
-          bg={colorMode === "dark" ? "white" : "black"}
-          color={colorMode === "dark" ? "black" : "white"}
+          size='sm'
+          bg={colorMode === "dark" ? "white" : "gray.700"}
+          color={colorMode === "dark" ? "gray.700" : "white"}
           _hover={{
             bg: colorMode === "dark" ? "gray.200" : "gray.800",
           }}
@@ -137,7 +124,6 @@ const Homepage = () => {
           {colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
         </Button>
       </Box>
-    </ChakraProvider>
   );
 };
 

@@ -21,7 +21,7 @@ const sendEmail = (email, uniqueString) => {
     from: '"SwiftTalk" <swifttalk.messenger@outlook.com>"',
     to: email,
     subject: "Confirm your SwiftTalk account",
-    html: `Press <a href="http://localhost:6000/verify/${uniqueString}"> here </a> to verify your account.`,
+    html: `Press <a href="http://localhost:5000/verify/${uniqueString}"> here </a> to verify your account.`,
   };
 
   Transport.sendMail(mailOptions, function (err, response) {

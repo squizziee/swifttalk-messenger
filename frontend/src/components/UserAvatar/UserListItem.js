@@ -1,25 +1,24 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, Text } from "@chakra-ui/layout";
+import { useColorMode } from "@chakra-ui/react";
 
 const UserListItem = (props) => {
-  // const { user } = ChatState();
+  const { colorMode, toggleColorMode } = useColorMode();
   const user = props.user
   const handleFunction = props.handleFunction
   return (
     <Box
       onClick={handleFunction}
       cursor="pointer"
-      bg="#eef2f7"
-      _hover={{
-        background: "#fc839f",
-        color: "white",
-        transition: '0.3s',
-        boxShadow: "inner"
-      }}
+      bg={colorMode=== "dark" ? "#272d37" : "#eef2f7"}
+      color={colorMode=== "dark" ? "white" : "black"}
+      _hover={
+        colorMode === "dark" ? {background: "#5cb583", transition: '0.3s',
+        boxShadow: "inner"} : {background: "#fc839f", color: "white",transition: '0.3s',
+        boxShadow: "inner"}}
       w="100%"
       d="flex"
       alignItems="center"
-      color="black"
       px={3}
       py={2}
       mb={1}

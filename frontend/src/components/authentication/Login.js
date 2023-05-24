@@ -114,22 +114,27 @@ const Login = () => {
             }}
           />
           <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
+            <Button 
+              colorScheme="gray"
+              h="1.75rem"
+              size="sm"
+              onClick={handleClick}
+          >
               {show ? <ViewOffIcon /> : <ViewIcon />}
             </Button>
           </InputRightElement>
         </InputGroup>
       </FormControl>
       <Button
-  bg="#fc839f"
-  color="white"
-  width="100%"
-  style={{ marginTop: 15 }}
-  onClick={submitHandler}
-  isLoading={loading}
->
-  Login
-</Button>
+        bg="#fc839f"
+        color="white"
+        width="100%"
+        style={{ marginTop: 15 }}
+        onClick={submitHandler}
+        isLoading={loading}
+      >
+        Login
+      </Button>
     </VStack>
   );
 };
