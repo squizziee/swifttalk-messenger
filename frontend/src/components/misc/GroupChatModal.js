@@ -12,6 +12,7 @@ import {
     Input,
     useToast,
     Box,
+    useColorMode
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -29,6 +30,7 @@ const GroupChatModal = ({ children }) => {
     const toast = useToast();
 
     const { user, chats, setChats } = ChatState();
+    const { colorMode, toggleColorMode } = useColorMode();
 
     const handleGroup = (userToAdd) => {
         if (selectedUsers.includes(userToAdd)) {
@@ -143,15 +145,18 @@ const GroupChatModal = ({ children }) => {
                     <ModalBody d="flex" flexDir="column" alignItems="center">
                         <FormControl>
                             <Input
+                                focusBorderColor={colorMode === "dark" ? "#5cb583" : "#fc839f"}
                                 placeholder="Chat Name"
                                 mb={3}
                                 onChange={(e) => setGroupChatName(e.target.value)}
                             />
                         </FormControl>
-                        <FormControl mb={3}>
+                        <FormControl>
                             <Input
+                                focusBorderColor={colorMode === "dark" ? "#5cb583" : "#fc839f"}
                                 placeholder="Add Users eg: John, Piyush, Jane"
                                 onChange={(e) => handleSearch(e.target.value)}
+                                mb="15px"
                             />
                         </FormControl>
                         <Box w="100%" d="flex" flexWrap="wrap">
@@ -179,7 +184,7 @@ const GroupChatModal = ({ children }) => {
                         )}
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={handleSubmit} colorScheme="swift">
+                        <Button onClick={handleSubmit} colorScheme={colorMode === "dark" ? "green" : "swift"}>
                             Create Chat
                         </Button>
                     </ModalFooter>

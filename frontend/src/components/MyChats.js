@@ -1,23 +1,21 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box, Stack, Text, StackDivider} from "@chakra-ui/layout";
-import { useToast } from "@chakra-ui/toast";
+import { Box, Stack, Text, StackDivider, Button } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getSender, getLastMessageContent } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./misc/GroupChatModal";
-import { Button } from "@chakra-ui/react";
 import { ChatState } from "../context/ChatProvider";
+import { useColorMode } from "@chakra-ui/react";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
-
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
-
   const toast = useToast();
+  const { colorMode } = useColorMode();
 
   const fetchChats = async () => {
-    // console.log(user._id);
     try {
       const config = {
         headers: {
@@ -50,7 +48,7 @@ const MyChats = ({ fetchAgain }) => {
       flexDir="column"
       alignItems="center"
       p={3}
-      bg="white"
+      bg={colorMode === "dark" ? "gray.700" : "white"}
       w={{ base: "100%", md: "32%" }}
       mr={3}
       borderRadius="lg"
@@ -64,8 +62,9 @@ const MyChats = ({ fetchAgain }) => {
         justifyContent="space-between"
         alignItems="center"
         fontWeight="medium"
+        bg={colorMode === "dark" ? "gray.700" : "white"}
       >
-            My Chats
+        My Chats
         <GroupChatModal>
           <Button
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -78,22 +77,30 @@ const MyChats = ({ fetchAgain }) => {
       <Box
         display="flex"
         flexDir="column"
-        bg="#F6F8FB"
+        bg={colorMode === "dark" ? "gray.800" : "#F6F8FB"}
         w="100%"
         h="100%"
         borderRadius="lg"
         overflowY="hidden"
       >
         {chats ? (
-          <Stack overflowY="scroll" spacing={0} divider={<StackDivider borderColor='gray.200' />}>
+          <Stack
+            overflowY="scroll"
+            spacing={0}
+            divider={<StackDivider borderColor={colorMode === "dark" ? "#a8a7a7" : "grey.200"} />}
+          >
             {chats.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
-                bg={selectedChat === chat ? "#fc839f" : "#eef2f7"}
-                color={selectedChat === chat ? "white" : "black"}
+                bg={selectedChat === chat ? (colorMode === "dark" ? "#5cb583" : "#fc839f") : (colorMode === "dark" ? "#333b48" : "#eef2f7")}
+                color={selectedChat === chat || colorMode === "dark" ? "white" : "black"}
                 boxShadow={selectedChat === chat ? "inner" : "sm"}
-                _hover={selectedChat === chat ? {bg:"#F35E80", transition: '0.3s'} : { bg:"#E9ECF1", transition: '0.3s'} }
+                _hover={
+                  selectedChat === chat
+                    ? { bg: colorMode === "dark" ? "#6bb78d" : "#F35E80", transition: "0.3s" }
+                    : { bg: colorMode === "dark" ? "#272d37" : "#E9ECF1", transition: "0.3s" }
+                }
                 px={3}
                 py={2}
                 key={chat._id}
@@ -107,10 +114,17 @@ const MyChats = ({ fetchAgain }) => {
                   <Text fontSize="xs" fontWeight="medium">
                     <b>{chat.latestMessage.sender.name} : </b>
                     {getLastMessageContent(chat, loggedUser).length > 50
-                        ? getLastMessageContent(chat, loggedUser).substring(0, 51) + "..."
-                        : getLastMessageContent(chat, loggedUser)}
+                      ? getLastMessageContent(chat, loggedUser).substring(
+                        0,
+                        51
+                      ) + "..."
+                      : getLastMessageContent(chat, loggedUser)}
                   </Text>
-                ) : (<Text fontSize="xs" fontWeight="medium">No messages in this chat</Text>)}
+                ) : (
+                  <Text fontSize="xs" fontWeight="medium">
+                    No messages in this chat
+                  </Text>
+                )}
               </Box>
             ))}
           </Stack>

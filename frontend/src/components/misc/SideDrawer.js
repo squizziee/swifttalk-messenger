@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Box, Text } from "@chakra-ui/layout";
-import { Button, Input, Spinner, IconButton } from "@chakra-ui/react";
+import { Button, Input, Spinner, IconButton, useColorMode } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
@@ -23,6 +23,7 @@ import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
 import EditModal from "./EditProfile";
+import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -31,6 +32,10 @@ const SideDrawer = () => {
   const [loadingChat, setLoadingChat] = useState(false);
   const [loadingPic, setLoadingPic] = useState(false);
 
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  const focusBorderColor =
+    colorMode === "dark" ? "#5cb583" : "#fc839f";
   const {
     setSelectedChat,
     user,
@@ -121,7 +126,7 @@ const SideDrawer = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        bg="white"
+        bg={colorMode === "dark" ? "gray.700" : "white"}
         p="5px 10px 5px 10px"
         boxShadow="base"
         borderRadius="lg"
@@ -133,16 +138,29 @@ const SideDrawer = () => {
           </Text>
         </Button>
         <Text fontSize="2xl" fontWeight="bold">
-          SwiftTalk Alpha
+          SwiftTalk Beta
         </Text>
         <div>
+        <Button
+          onClick={toggleColorMode}
+          bg={colorMode === "dark" ? "white" : "#25292d"}
+          color={colorMode === "dark" ? "#25292d" : "white"}
+          _hover={{
+            bg: colorMode === "dark" ? "gray.200" : "gray.800",
+          }}
+          _active={{
+            bg: colorMode === "dark" ? "gray.300" : "gray.700",
+          }}
+        >
+          {colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+        </Button>
           <Menu>
             <MenuButton p={2}>
               <IconButton icon={<i className="fas fa-bell"></i>}>
-              <NotificationBadge
-                count={notification.length}
-                effect={Effect.SCALE}
-              />
+                <NotificationBadge
+                  count={notification.length}
+                  effect={Effect.SCALE}
+                />
               </IconButton>
             </MenuButton>
             <MenuList pl={2}>
@@ -200,7 +218,7 @@ const SideDrawer = () => {
                 mr={2}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                focusBorderColor='#fc839f'
+                focusBorderColor={focusBorderColor}
               />
               <Button onClick={handleSearch}>Go</Button>
             </Box>

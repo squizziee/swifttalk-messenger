@@ -1,5 +1,5 @@
 import { FormControl } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import "./styles.css";
 import React from "react";
@@ -16,7 +16,7 @@ import io from "socket.io-client";
 import UpdateGroupChatModal from "./misc/UpdateGroupChatModal";
 import { ChatState } from "../context/ChatProvider";
 import CryptoJS from "crypto-js";
-import { Button } from "@chakra-ui/button";
+import { useColorMode } from "@chakra-ui/react";
 
 const { AES } = CryptoJS;
 const createECDH = require('create-ecdh/browser')
@@ -44,7 +44,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
   const { selectedChat, setSelectedChat, user, notification, setNotification } =
     ChatState();
+    const { colorMode } = useColorMode();
 
+    const focusBorderColor =
+      colorMode === "dark" ? "#5cb583" : "#fc839f";
   const fetchMessages = async () => {
     if (!selectedChat) return;
 
@@ -361,7 +364,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const handleChooseFile = () => {
     fileInputRef.current.click();
   };
-
   return (
     <>
       {selectedChat ? (
@@ -404,7 +406,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             flexDir="column"
             justifyContent="flex-end"
             p={3}
-            bg="#F6F8FB"
+            bg={colorMode === "dark" ? "gray.800" : "#F6F8FB"}
             w="100%"
             h="100%"
             borderRadius="lg"
@@ -444,16 +446,21 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
+              <InputGroup>
+              <InputLeftElement>
+                <i class="far fa-comment" style={{color:'gray'}}></i>
+              </InputLeftElement>
               <Input
-                variant="filled"
-                bg="#eef2f7"
+                variant="outline"
+                bg={colorMode === "dark" ? "gray.700" : "#eef2f7"}
                 placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}
-                focusBorderColor='#fc839f'
+                focusBorderColor={focusBorderColor}
                 flex="1"
                 marginRight={2}
               />
+              </InputGroup>
               <Flex alignItems="center">
                 <Box as="label" htmlFor="file-input">
                   <VisuallyHidden>
@@ -464,13 +471,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                       onChange={handleFileUpload}
                     />
                   </VisuallyHidden>
-                  <Button
-                    colorScheme="blue"
+                  <IconButton
                     width="100%"
                     onClick={handleChooseFile}
-                  >
-                    Choose File
-                  </Button>
+                    icon={<i class="far fa-file" style={{color:'gray'}}></i>}
+                    borderWidth='1px'
+                  />
                 </Box>
               </Flex>
             </FormControl>
