@@ -2,7 +2,7 @@
 
 Messenger web-application on NodeJS with top-notch security system.
 
-##Setup
+## Setup
 
 Instructions on how to start the project on your local machine...
 
